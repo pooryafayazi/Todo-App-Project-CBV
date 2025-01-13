@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  todo:
+    container_name: todo
+    build:
+      context: .
+      dockerfile: ./dockerfile/dev/django/Dockerfile
+    volumes:
+      - ./core:/usr/src/app
+    environment:
+      - DEBUG=1
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    # command: python manage.py runserver 0.0.0.0:8000
+
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: todo_db
+      POSTGRES_USER: todo_user
+      POSTGRES_PASSWORD: todo_password
+    restart: always
+
+volumes:
+  postgres_data:
