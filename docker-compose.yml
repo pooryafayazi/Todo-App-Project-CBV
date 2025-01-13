@@ -5,26 +5,31 @@ services:
     container_name: todo
     build:
       context: .
-      dockerfile: ./dockerfile/dev/django/Dockerfile
+      dockerfile: ./dockerfiles/dev/django/Dockerfile
     volumes:
       - ./core:/usr/src/app
+    working_dir: /usr/src/app
+    # command: django-admin startproject core .
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
     environment:
       - DEBUG=1
     restart: always
-    ports:
-      - "8000:8000"
     depends_on:
       - db
-    # command: python manage.py runserver 0.0.0.0:8000
+    
 
   db:
     image: postgres:15-alpine
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - ./postgres/data:/var/lib/postgresql/data/
     environment:
       POSTGRES_DB: todo_db
       POSTGRES_USER: todo_user
       POSTGRES_PASSWORD: todo_password
+    expose:
+      - "5432"
     restart: always
 
 volumes:
