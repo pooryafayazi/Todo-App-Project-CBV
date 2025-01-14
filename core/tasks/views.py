@@ -45,7 +45,7 @@ class TasksListView(ListView):
     model = Task
     template_name = 'tasks/task_list3.html'
     context_object_name = 'tasks'
-    paginate_by = 4
+    paginate_by = 6
     
 
     def get_queryset(self):
@@ -96,8 +96,23 @@ class TaskCreateView(CreateView):
     
     
     
+class TaskUpdateView(UpdateView):
+    model = Task
+    template_name = 'tasks/task_detail.html'
+    fields = ['title','due_date']
+    context_object_name = 'task'
+    # form_class = TaskForm i didnt create TaskForm
+    success_url = '/'
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
     
     
+class TaskDeleteView(DeleteView):
+    model = Task
+    context_object_name = "task"
+    success_url = '/'
+
     
 # class TaskCreateView(View):
 #     def get(self, request):

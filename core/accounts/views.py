@@ -15,7 +15,7 @@ class LoginView(View):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('task_list')
+            return redirect('tasks:list_view')
         return render(request, 'accounts/login.html', {'error': 'Invalid credentials'})
 
 class LogoutView(View):
@@ -26,7 +26,7 @@ class RegisterView(FormView):
     template_name = "accounts/register.html"
     form_class = UserCreationForm
     redirect_authenticated_user = True
-    success_url = reverse_lazy("task_list")
+    success_url = reverse_lazy("tasks:list_view")
 
     def form_valid(self, form):
         user = form.save()
@@ -36,5 +36,5 @@ class RegisterView(FormView):
 
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return redirect("task_list")
+            return redirect("tasks:list_view")
         return super(RegisterView, self).get(*args, **kwargs)

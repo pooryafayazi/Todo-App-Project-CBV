@@ -28,14 +28,14 @@
               <div class="pb-2">
                 <div class="card">
                   <div class="card-body">
-                    <div class="d-flex flex-row align-items-center">
-                      <input type="text" class="form-control form-control-lg me-3" id="exampleFormControlInput1" placeholder="{{ object.title}}">
-                      
-                      <div>
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Submit</button>
-                      </div>
-                      
-                      
+                    <div class="flex-row align-items-center">
+                      <form class="pt-3" method="POST" action="{% url 'tasks:task-update' pk=task.id %}">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                          <input type="text" class="form-control rounded-4 me-3" name="title" value="{{ task.title }}" aria-label="Recipient's username" aria-describedby="button-addon2">
+                          <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary rounded-4" >Add</button>
+                        </div>
+                      </form>                      
                     </div>
                   </div>
                 </div>
