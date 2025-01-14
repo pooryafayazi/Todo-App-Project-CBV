@@ -1,6 +1,8 @@
 from django.shortcuts import redirect
 from django.views.generic.list import ListView
 from django.views.generic.edit import (CreateView,UpdateView,DeleteView,)
+from django.views.generic.base import TemplateView
+from django.views.generic import ListView
 from django.urls import reverse_lazy
 # from .forms import TaskUpdateForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -14,10 +16,61 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
 from .forms import TaskForm
 
-class TaskListView(View):
-    def get(self, request):
-        tasks = Task.objects.all()
-        return render(request, 'tasks/task_list.html', {'tasks': tasks})
+class TaskListView(TemplateView):
+    template_name = 'tasks/task_list3.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tasks'] = Task.objects.all()        
+        context['author'] = Task.objects.first().user
+        return context
+    
+'''    
+class TListView(ListView):
+    # model = Task
+    queryset = Task.objects.all()
+    template_name = 'tasks/task_list3.html'
+    context_object_name = 'tasks'
+    paginate_by = 6
+    
+    def get_queryset(self):
+        return Task.objects.all()
+        # return Task.objects.filter(complete=Flase)
+        # return Task.objects.filter(active=True)
+'''
+
+from django.views.generic import ListView
+from .models import Task
+
+class TListView(ListView):
+    model = Task
+    template_name = 'tasks/task_list3.html'
+    context_object_name = 'tasks'
+    paginate_by = 10
+
+    def get_queryset(self):
+        
+        queryset = Task.objects.all()  # شروع با تمام تسک‌ها
+        context_object_name = 'tasks'
+        # دریافت فیلتر از پارامترهای درخواست
+        filter_value = self.request.GET.get('filter')
+        sort_value = self.request.GET.get('sort')
+        if filter_value == '1':
+             queryset = queryset.filter(title__isnull=False)
+        elif filter_value == '2':  # Completed
+            queryset = queryset.filter(complete=True)
+        elif filter_value == '3':  # Active
+            queryset = queryset.filter(active=True)
+        elif filter_value == '4':  # Has due date
+            queryset = queryset.filter(due_date__isnull=False)
+
+        # اعمال مرتب‌سازی
+        if sort_value == '2':  # Due date
+            queryset = queryset.order_by('due_date')
+        else:  # Default to added date
+            queryset = queryset.order_by('-created_date')
+
+        return queryset
+
 
 # class TaskCreateView(View):
 #     def get(self, request):

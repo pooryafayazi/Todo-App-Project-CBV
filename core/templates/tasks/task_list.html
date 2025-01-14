@@ -1,4 +1,4 @@
-for task in tasks
+{% for task in tasks %}
     <div>
         <h2>{{ task.title }}</h2>
         <p>Completed: {{ task.completed }}</p>
@@ -6,9 +6,10 @@ for task in tasks
         <!-- <form action=" url 'task_delete' task.pk " method="post"> -->
             {% csrf_token %}
             <button type="submit">Delete</button>
+            <button type="submit">Edit</button>
         </form>
     </div>
-endfor
+{% endfor %}
 <!-- <a href=" url 'task_create' ">Create New Task</a> -->
 <br>
 <!-- <a href=" url 'logout' ">logout</a> -->

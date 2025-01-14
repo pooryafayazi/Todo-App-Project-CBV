@@ -1,9 +1,17 @@
 from django.urls import path
-from .views import TaskListView
+from .views import TaskListView, TListView
+from django.views.generic import RedirectView
 # from .views import TaskListView, TaskCreateView, TaskUpdateView, TaskDeleteView
 
+app_name = 'tasks'
+
 urlpatterns = [
-    path('', TaskListView.as_view(), name='task_list'),
+    # path('gotoitmeter', RedirectView.as_view(url='https://www.itmeter.ir/'), name='gotoitmeter'),
+    # path('cbv-task', RedirectView.as_view(pattern_name='tasks:task_list' ), name='gotoitmeter'),
+    
+    path('tasks', TaskListView.as_view(), name='task_list'),
+    path('tasklist/', TListView.as_view(), name='tlist_view'),
+    
     # path('task/new/', TaskCreateView.as_view(), name='task_create'),
     # path('task/<int:pk>/edit/', TaskUpdateView.as_view(), name='task_edit'),
     # path('task/<int:pk>/delete/', TaskDeleteView.as_view(), name='task_delete'),
