@@ -28,28 +28,14 @@
               <div class="pb-2">
                 <div class="card">
                   <div class="card-body">
-                    <div class="d-flex flex-row align-items-center">
-                      <!-- <input type="text" class="form-control form-control-lg" id="exampleFormControlInput1" placeholder="Add new...">
-                      <a href="#!" data-mdb-tooltip-init title="Set due date"><i class="fas fa-calendar-alt fa-lg me-3"></i></a>
-                      <div>
-                        <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Add</button>
-                      </div> -->
-                    
-                      <div>
-                        <form class="pt-3" method="POST" action="{% url 'tasks:task-create' %}">
-                            {% csrf_token %}
-                            <div class="input-group mb-3">
-                              <input type="text" class="form-control rounded-4" name="title" placeholder="Enter task title"
-                                aria-label="Recipient's username" aria-describedby="button-addon2">
-                              <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary" >Add</button>
-                            </div>
-                          </form>
-                      </div>
-                    
-                    
-                    
-                    
-                    
+                    <div class="flex-row align-items-center">                      
+                      <form class="pt-3" method="POST" action="{% url 'tasks:task-create' %}">
+                          {% csrf_token %}
+                          <div class="input-group mb-3">
+                            <input type="text" class="form-control rounded-4 me-3" name="title" placeholder="Enter task title" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary rounded-4" >Add</button>
+                          </div>
+                        </form>
                     </div>
                   </div>
                 </div>
