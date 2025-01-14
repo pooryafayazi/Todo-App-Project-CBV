@@ -9,7 +9,6 @@ WORKDIR /usr/src/app
 
 COPY ./requirements.txt .
 
-
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt && pip install python-decouple
 
 COPY ./core .
@@ -17,3 +16,8 @@ COPY ./core .
 # RUN python manage.py migrate
 
 # CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+# terminal command: docker build -t django-app .
+# terminal command checking to succeeding to build image : docker images
+# terminal command: docker run -p 8000:8000 django-app
+# check in browser: http://127.0.0.1:8000/
