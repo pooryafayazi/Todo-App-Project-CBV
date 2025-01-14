@@ -1,12 +1,15 @@
 from django.db import models
-from django.conf import settings
+# from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 
 # Create your models here.
-
+ 
+User = get_user_model()
 
 class Task(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=255)
     complete = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
