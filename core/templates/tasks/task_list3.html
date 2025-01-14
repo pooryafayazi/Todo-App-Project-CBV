@@ -35,6 +35,11 @@
                             <input type="text" class="form-control rounded-4 me-3" name="title" placeholder="Enter task title" aria-label="Recipient's username" aria-describedby="button-addon2">
                             <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary rounded-4" >Add</button>
                           </div>
+                          <div class="d-flex justify-content-center align-items-center mb-4 pt-2 pb-3">
+                            <span class="me-3">change due date:</span> 
+                            <input value="{{ task.due_date|date:'Y-m-d\TH:i' }}" name="due_date" type="datetime-local" class="form-control me-3" id="dueDateTime" style="width: 40ch;">
+                            <i class="fas fa-calendar-alt fa-lg me-3"></i>
+                        </div>
                         </form>
                     </div>
                   </div>
