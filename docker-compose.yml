@@ -50,3 +50,7 @@ volumes:
 # terminal command : docker rmi -f <image_id> 
 
 # terminal command : docker-compose up --build
+
+# terminal command : docker-compose exec <container_name> sh -c "django-admin startproject core ."
+# terminal command : docker-compose exec <container_name> sh -c "python manage.py createsuperuser"
+

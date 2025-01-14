@@ -9,7 +9,9 @@ WORKDIR /usr/src/app
 
 COPY ./requirements.txt .
 
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt && pip install python-decouple
+RUN pip install -i https://mirror-pypi.runflare.com/simple --upgrade pip \
+    && pip install -i https://mirror-pypi.runflare.com/simple --no-cache-dir -r requirements.txt \
+    && pip install -i https://mirror-pypi.runflare.com/simple python-decouple
 
 COPY ./core .
 

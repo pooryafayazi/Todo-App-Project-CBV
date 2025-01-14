@@ -2,13 +2,13 @@
     <div>
         <h2>{{ task.title }}</h2>
         <p>Completed: {{ task.completed }}</p>
-        <a href="{% url 'task_edit' task.pk %}">Edit</a>
-        <form action="{% url 'task_delete' task.pk %}" method="post">
+        <!-- <a href=" url 'task_edit' task.pk ">Edit</a> -->
+        <!-- <form action=" url 'task_delete' task.pk " method="post"> -->
             {% csrf_token %}
             <button type="submit">Delete</button>
         </form>
     </div>
 {% endfor %}
-<a href="{% url 'task_create' %}">Create New Task</a>
+<!-- <a href=" url 'task_create' ">Create New Task</a> -->
 <br>
-<a href="{% url 'logout' %}">logout</a>
+<!-- <a href=" url 'logout' ">logout</a> -->
