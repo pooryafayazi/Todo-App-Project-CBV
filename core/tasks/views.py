@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.views.generic.list import ListView
 from django.views.generic.edit import (CreateView,UpdateView,DeleteView,)
 from django.urls import reverse_lazy
-from .forms import TaskUpdateForm
+# from .forms import TaskUpdateForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from .models import Task
