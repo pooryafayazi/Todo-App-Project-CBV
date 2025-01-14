@@ -1,3 +1,4 @@
+# docker-compose.yml file is used to define the services that make up your app.
 version: '3.8'
 
 services:
@@ -35,3 +36,17 @@ services:
 
 volumes:
   postgres_data:
+
+
+# Down docker container
+# Remove docker images
+
+# OR in terminal :
+
+# terminal command : docker ps -a
+# terminal command : docker rm -f <container_id>
+
+# terminal command : docker images
+# terminal command : docker rmi -f <image_id> 
+
+# terminal command : docker-compose up --build
