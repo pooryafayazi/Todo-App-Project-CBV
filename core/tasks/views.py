@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.views.generic.list import ListView
 from django.views.generic.edit import (CreateView,UpdateView,DeleteView,)
 from django.views.generic.base import TemplateView
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse_lazy
 # from .forms import TaskUpdateForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -41,7 +41,7 @@ class TListView(ListView):
 from django.views.generic import ListView
 from .models import Task
 
-class TListView(ListView):
+class TasksListView(ListView):
     model = Task
     template_name = 'tasks/task_list3.html'
     context_object_name = 'tasks'
@@ -76,7 +76,29 @@ class TListView(ListView):
 
         return queryset
 
-
+class TaskDetailtView(DetailView):
+    model = Task
+    template_name = 'tasks/task_detail.html'
+    context_object_name = 'task'
+    
+    
+    
+    
+class TaskCreateView(CreateView):
+    model = Task
+    template_name = 'tasks/task_list3.html'
+    fields = ['title','due_date']
+    # form_class = TaskForm i didnt create TaskForm
+    success_url = '/'
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+    
+    
+    
+    
+    
+    
 # class TaskCreateView(View):
 #     def get(self, request):
 #         form = TaskForm()

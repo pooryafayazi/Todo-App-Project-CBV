@@ -18,21 +18,38 @@
   
               <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
                 <i class="fas fa-check-square me-1"></i>
-                
-                <u>My Todo-s {{ tasks.0.user }}</u>
+                {% if tasks %}
+                <u>My Todo-s {{ tasks.0.user }} </u>
+                {% else %}
+                <u>My Todo-s</u>
+                {% endif %}
               </p>
   
               <div class="pb-2">
                 <div class="card">
                   <div class="card-body">
                     <div class="d-flex flex-row align-items-center">
-                      <input type="text" class="form-control form-control-lg" id="exampleFormControlInput1"
-                        placeholder="Add new...">
-                      <a href="#!" data-mdb-tooltip-init title="Set due date"><i
-                          class="fas fa-calendar-alt fa-lg me-3"></i></a>
+                      <!-- <input type="text" class="form-control form-control-lg" id="exampleFormControlInput1" placeholder="Add new...">
+                      <a href="#!" data-mdb-tooltip-init title="Set due date"><i class="fas fa-calendar-alt fa-lg me-3"></i></a>
                       <div>
                         <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Add</button>
+                      </div> -->
+                    
+                      <div>
+                        <form class="pt-3" method="POST" action="{% url 'tasks:task-create' %}">
+                            {% csrf_token %}
+                            <div class="input-group mb-3">
+                              <input type="text" class="form-control rounded-4" name="title" placeholder="Enter task title"
+                                aria-label="Recipient's username" aria-describedby="button-addon2">
+                              <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary" >Add</button>
+                            </div>
+                          </form>
                       </div>
+                    
+                    
+                    
+                    
+                    
                     </div>
                   </div>
                 </div>
@@ -122,7 +139,7 @@
                     {% endif %}
                     <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
                       <div class="d-flex flex-row justify-content-end mb-1">
-                        <a href="#!" class="text-info" data-mdb-tooltip-init title="Edit todo"><i class="fas fa-pencil-alt me-3"></i></a>
+                        <a href="{% url 'tasks:task-detail' pk=task.id %}" class="text-info" data-mdb-tooltip-init title="Edit todo"><i class="fas fa-pencil-alt me-3"></i></a>
                         <a href="#!" class="text-danger" data-mdb-tooltip-init title="Delete todo"><i class="fas fa-trash-alt"></i></a>
                       </div>
                       <div class="text-end text-muted">
