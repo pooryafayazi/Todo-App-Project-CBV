@@ -1,0 +1,39 @@
+
+{% for task in tasks %}
+<ul class="list-group list-group-horizontal rounded-0">
+    <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
+      <div class="form-check">
+          {% if task.complete == True %}
+          <input class="form-check-input me-0" type="checkbox" value="" id="flexCheckChecked1" aria-label="..." checked onchange="toggleStrike(this, '{{ task.id }}')" />
+          {% else %}
+          <input class="form-check-input me-0" name="complete" type="checkbox" value="" id="flexCheckChecked2" aria-label="..." onchange="toggleStrike(this, '{{ task.id }}')" />
+          {% endif %}
+      </div>
+    </li>
+    <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
+      <p class="lead fw-normal mb-0 task-title" id="task-title-{{ task.id }}" style="{% if task.complete == True %}text-decoration: line-through;{% endif %}">{{ task.title }}</p>
+    </li>
+
+  {% if task.due_date %}
+    <li class="list-group-item px-3 py-1 d-flex align-items-center border-0 bg-transparent">
+      <div class="py-2 px-3 me-2 border border-warning rounded-3 d-flex align-items-center bg-body-tertiary">
+        <p class="small mb-0">
+          <a href="#!" data-mdb-tooltip-init title="Due on date"><i class="fas fa-hourglass-half me-2 text-warning"></i></a>
+          {{ task.due_date }}
+        </p>
+      </div>
+    </li>
+  {% endif %}
+    <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
+      <div class="d-flex flex-row justify-content-end mb-1">
+        <a href="{% url 'tasks:task-update' pk=task.id %}" class="text-info" data-mdb-tooltip-init title="Edit todo"><i class="fas fa-pencil-alt me-3"></i></a>
+        <a type="button" href="{% url 'tasks:task-delete' pk=task.id %}" class="text-danger" data-mdb-tooltip-init title="Delete todo"><i class="fas fa-trash-alt"></i></a>
+      </div>
+      <div class="text-end text-muted">
+        <a href="#!" class="text-muted" data-mdb-tooltip-init title="Created date">
+          <p class="small mb-0"><i class="fas fa-info-circle me-2"></i>{{ task.created_date}}</p>
+        </a>
+      </div>
+    </li>
+</ul>
+{% endfor %}

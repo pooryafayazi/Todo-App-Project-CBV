@@ -106,6 +106,26 @@ class TaskUpdateView(UpdateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+'''    
+class TaskCompleteView(UpdateView):
+    model = Task
+    template_name = 'tasks/task_list3.html'
+    fields = ['title','due_date','complete']
+    context_object_name = "tasks"
+    success_url = '/'
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+'''
+class TaskCompleteView(View):
+    def post(self, request, pk):
+        task = get_object_or_404(Task, pk=pk)
+        task.complete = not task.complete
+        task.save()
+        # هدایت کاربر به صفحه اصلی
+        return redirect('tasks:list_view')
+    
     
     
 class TaskDeleteView(DeleteView):
