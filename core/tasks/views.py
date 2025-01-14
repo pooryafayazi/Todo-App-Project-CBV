@@ -123,7 +123,6 @@ class TaskCompleteView(View):
         task = get_object_or_404(Task, pk=pk)
         task.complete = not task.complete
         task.save()
-        # هدایت کاربر به صفحه اصلی
         return redirect('tasks:list_view')
     
     

@@ -120,7 +120,10 @@
                   </div>
               </li>
               <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
-                  <p class="lead fw-normal mb-0 task-title" id="task-title-{{ task.id }}" style="{% if task.complete == True %}text-decoration: line-through;{% endif %}">{{ task.title }}</p>
+                  <!-- <p class="lead fw-normal mb-0 task-title" id="task-title-{{ task.id }}" style="{% if task.complete == True %}text-decoration: line-through;{% endif %}">{{ task.title }}</p> -->
+                  <style>.completed {text-decoration: line-through;}</style>
+                  <p class="lead fw-normal mb-0 task-title {% if task.complete %}completed{% endif %}" id="task-title-{{ task.id }}">{{ task.title }}</p>
+                
               </li>
       
               {% if task.due_date %}
