@@ -45,28 +45,33 @@ class TListView(ListView):
     model = Task
     template_name = 'tasks/task_list3.html'
     context_object_name = 'tasks'
-    paginate_by = 10
+    paginate_by = 4
+    
 
     def get_queryset(self):
         
-        queryset = Task.objects.all()  # شروع با تمام تسک‌ها
+        # queryset = Task.objects.all()  
         context_object_name = 'tasks'
-        # دریافت فیلتر از پارامترهای درخواست
+        
+        queryset = Task.objects.filter(user=self.request.user)  
+        
         filter_value = self.request.GET.get('filter')
         sort_value = self.request.GET.get('sort')
+        # filter_value = self.request.GET.get('filter')
+        # sort_value = self.request.GET.get('sort')
         if filter_value == '1':
              queryset = queryset.filter(title__isnull=False)
-        elif filter_value == '2':  # Completed
+        elif filter_value == '2':
             queryset = queryset.filter(complete=True)
-        elif filter_value == '3':  # Active
+        elif filter_value == '3':
             queryset = queryset.filter(active=True)
-        elif filter_value == '4':  # Has due date
+        elif filter_value == '4':
             queryset = queryset.filter(due_date__isnull=False)
 
-        # اعمال مرتب‌سازی
-        if sort_value == '2':  # Due date
+
+        if sort_value == '2':  
             queryset = queryset.order_by('due_date')
-        else:  # Default to added date
+        else: 
             queryset = queryset.order_by('-created_date')
 
         return queryset
