@@ -146,8 +146,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom User model
 AUTH_USER_MODEL = 'accounts.User'
-# AUTHENTICATION_BACKENDS = [
-#     'accounts.backends.EmailBackend',  # Replace 'your_app_name' with the name of your app
-#     'django.contrib.auth.backends.ModelBackend',  # Keep the default for admin access
-# ]
-
