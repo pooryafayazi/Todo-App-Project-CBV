@@ -1,20 +1,11 @@
-from django.shortcuts import redirect
-# from django.views.generic.list import ListView
-# from django.views.generic.edit import (CreateView,UpdateView,DeleteView,)
-# from django.views.generic.base import TemplateView
+from django.shortcuts import redirect, get_object_or_404
+
 from django.views.generic import ListView, CreateView,UpdateView,DeleteView
-from django.urls import reverse_lazy
-# from .forms import TaskUpdateForm
+
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.views import View
 from .models import Task
 
-
-
-from django.views import View
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Task
-from .forms import TaskForm
 
 '''
 class TaskListView(TemplateView):
@@ -83,14 +74,7 @@ class TasksListView(ActiveUserRequiredMixin, ListView):
 
         return queryset
     
-    
-'''
-class TaskDetailtView(DetailView):
-    model = Task
-    template_name = 'tasks/task_detail.html'
-    context_object_name = 'task'
- '''   
-    
+   
     
     
 class TaskCreateView(LoginRequiredMixin, CreateView):
@@ -115,17 +99,7 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-'''    
-class TaskCompleteView(UpdateView):
-    model = Task
-    template_name = 'tasks/task_list3.html'
-    fields = ['title','due_date','complete']
-    context_object_name = "tasks"
-    success_url = '/'
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-'''
+
 class TaskCompleteView(LoginRequiredMixin, View):
     def post(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
@@ -141,34 +115,3 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
     success_url = '/'
 
     
-# class TaskCreateView(View):
-#     def get(self, request):
-#         form = TaskForm()
-#         return render(request, 'tasks/task_form.html', {'form': form})
-
-#     def post(self, request):
-#         form = TaskForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('task_list')
-#         return render(request, 'tasks/task_form.html', {'form': form})
-
-# class TaskUpdateView(View):
-#     def get(self, request, pk):
-#         task = get_object_or_404(Task, pk=pk)
-#         form = TaskForm(instance=task)
-#         return render(request, 'tasks/task_form.html', {'form': form})
-
-#     def post(self, request, pk):
-#         task = get_object_or_404(Task, pk=pk)
-#         form = TaskForm(request.POST, instance=task)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('task_list')
-#         return render(request, 'tasks/task_form.html', {'form': form})
-
-# class TaskDeleteView(View):
-#     def post(self, request, pk):
-#         task = get_object_or_404(Task, pk=pk)
-#         task.delete()
-#         return redirect('task_list')
