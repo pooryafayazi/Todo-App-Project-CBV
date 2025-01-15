@@ -1,11 +1,11 @@
 from django.shortcuts import redirect
-from django.views.generic.list import ListView
-from django.views.generic.edit import (CreateView,UpdateView,DeleteView,)
-from django.views.generic.base import TemplateView
-from django.views.generic import ListView, DetailView, CreateView
+# from django.views.generic.list import ListView
+# from django.views.generic.edit import (CreateView,UpdateView,DeleteView,)
+# from django.views.generic.base import TemplateView
+from django.views.generic import ListView, CreateView,UpdateView,DeleteView
 from django.urls import reverse_lazy
 # from .forms import TaskUpdateForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.views import View
 from .models import Task
 
@@ -16,6 +16,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
 from .forms import TaskForm
 
+'''
 class TaskListView(TemplateView):
     template_name = 'tasks/task_list3.html'
     def get_context_data(self, **kwargs):
@@ -23,6 +24,7 @@ class TaskListView(TemplateView):
         context['tasks'] = Task.objects.all()        
         context['author'] = Task.objects.first().user
         return context
+'''
     
 '''    
 class TListView(ListView):
@@ -41,7 +43,12 @@ class TListView(ListView):
 from django.views.generic import ListView
 from .models import Task
 
-class TasksListView(ListView):
+
+class ActiveUserRequiredMixin(UserPassesTestMixin):
+    def test_func(self, *args, **kwargs):
+        return self.request.user.is_active
+
+class TasksListView(ActiveUserRequiredMixin, ListView):
     model = Task
     template_name = 'tasks/task_list3.html'
     context_object_name = 'tasks'
@@ -75,20 +82,21 @@ class TasksListView(ListView):
             queryset = queryset.order_by('-created_date')
 
         return queryset
-
+    
+    
+'''
 class TaskDetailtView(DetailView):
     model = Task
     template_name = 'tasks/task_detail.html'
     context_object_name = 'task'
+ '''   
     
     
     
-    
-class TaskCreateView(CreateView):
+class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
     template_name = 'tasks/task_list3.html'
     fields = ['title','due_date']
-    # form_class = TaskForm i didnt create TaskForm
     success_url = '/'
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -96,7 +104,7 @@ class TaskCreateView(CreateView):
     
     
     
-class TaskUpdateView(UpdateView):
+class TaskUpdateView(LoginRequiredMixin, UpdateView):
     model = Task
     template_name = 'tasks/task_detail.html'
     fields = ['title','due_date']
@@ -118,7 +126,7 @@ class TaskCompleteView(UpdateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 '''
-class TaskCompleteView(View):
+class TaskCompleteView(LoginRequiredMixin, View):
     def post(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
         task.complete = not task.complete
@@ -127,7 +135,7 @@ class TaskCompleteView(View):
     
     
     
-class TaskDeleteView(DeleteView):
+class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = "task"
     success_url = '/'

@@ -1,11 +1,90 @@
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="username" placeholder="Username" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit">Login</button>
-    {% if error %}
-        <p>{{ error }}</p>
-    {% endif %}
-</form>
-<br>
-<a href="{% url 'register' %}">Register an account</a>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task</title>
+  <link rel="stylesheet" href="staticfiles/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
+</head>
+<body>
+  <section class="vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col">
+          <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+            <div class="card-body py-4 px-4 px-md-5">
+  
+              
+  
+              
+  
+              
+                
+
+  
+
+                <form method="post" action="{% url 'accounts:login' %}">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><input type="email" name="email" placeholder="email" required></div>
+                    <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><input type="password" name="password" placeholder="Password" required></div>
+                    <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><button type="submit">Login</button></div>
+                    {% if error %}
+                        <p>{{ error }}</p>
+                    {% endif %}
+                </form>
+                {% if form.errors %}
+                            <div class="error">
+                                <ul>
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                <br>
+              <div class="d-flex justify-content-center align-items-center  pt-2 pb-3">
+               <a href="{% url 'accounts:register' %}">Register an account</a>
+              </div> 
+
+          
+
+
+
+                  
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    function toggleStrike(checkbox, taskId) {
+        const titleElement = document.getElementById('task-title-' + taskId);
+        if (checkbox.checked) {
+            titleElement.style.textDecoration = 'line-through';
+        } else {
+            titleElement.style.textDecoration = 'none';
+        }
+    }
+</script>
+<script>
+  function submitForm(checkbox, taskId) {
+      const form = document.getElementById('update-form-' + taskId);
+      form.elements['complete'].value = checkbox.checked ? 'True' : 'False';
+      form.submit();
+  }
+</script>
+</body>
+</html>

@@ -5,16 +5,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
-# Create your models here.
-
 class UserManager(BaseUserManager):
-    '''
-    Custom user manager class
-    '''
     def create_user(self, email, password, **extra_fields):
-        '''
-        Create and return a user with an email and password or extra data
-        '''
         if not email:
             raise ValueError(_('The Email field must be set'))
         email = self.normalize_email(email)
@@ -23,9 +15,6 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
     def create_superuser(self, email, password, **extra_fields):
-        '''
-        Create and return a superuser with an email and password or extra data
-        '''
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
@@ -36,9 +25,6 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
-    '''
-    Custom User model fore the Todo app that supports using email instead of username
-    '''
     email = models.EmailField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)    
     is_staff = models.BooleanField(default=False)
