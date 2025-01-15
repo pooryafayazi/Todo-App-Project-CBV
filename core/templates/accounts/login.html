@@ -1,12 +1,12 @@
 
 
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Task</title>
-  <link rel="stylesheet" href="staticfiles/main.css" />
+  <link rel="stylesheet" href="{% static 'main.css' %}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
@@ -18,16 +18,10 @@
         <div class="col">
           <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
             <div class="card-body py-4 px-4 px-md-5">
-  
-              
-  
-              
-  
-              
-                
 
-  
 
+              <div class="d-flex justify-content-center align-items-center  pt-2 pb-3">
+                <h2>Login</h2></div>
                 <form method="post" action="{% url 'accounts:login' %}">
                     {% csrf_token %}
                     <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><input type="email" name="email" placeholder="email" required></div>
@@ -53,14 +47,8 @@
                         {% endif %}
                 <br>
               <div class="d-flex justify-content-center align-items-center  pt-2 pb-3">
-               <a href="{% url 'accounts:register' %}">Register an account</a>
+                <p>Don't have an account? <a href="{% url 'accounts:register' %}">Register an account</a></p>
               </div> 
-
-          
-
-
-
-                  
 
 
             </div>
@@ -69,22 +57,5 @@
       </div>
     </div>
   </section>
-  <script>
-    function toggleStrike(checkbox, taskId) {
-        const titleElement = document.getElementById('task-title-' + taskId);
-        if (checkbox.checked) {
-            titleElement.style.textDecoration = 'line-through';
-        } else {
-            titleElement.style.textDecoration = 'none';
-        }
-    }
-</script>
-<script>
-  function submitForm(checkbox, taskId) {
-      const form = document.getElementById('update-form-' + taskId);
-      form.elements['complete'].value = checkbox.checked ? 'True' : 'False';
-      form.submit();
-  }
-</script>
 </body>
 </html>
