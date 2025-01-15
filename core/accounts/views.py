@@ -86,32 +86,6 @@ class CustomLoginView(View):
         return render(request, 'accounts/login.html', {'form': form}) 
     
     
-    
-
-
-
-'''
-class LoginView(View):
-    def get(self, request):
-        form = LoginForm()  # Initialize your login form
-        return render(request, 'accounts/login.html', {'form': form})
-
-    def post(self, request):
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            
-            # احراز هویت کاربر با استفاده از ایمیل
-            user = authenticate(request, email=email, password=password)
-            if user is not None:
-                login(request, user)  # Log the user in
-                return redirect('/')  # Redirect to a home page or dashboard
-            else:
-                form.add_error(None, "Invalid email or password.")
-        
-        return render(request, 'accounts/login.html', {'form': form})
-'''
 
 
 
