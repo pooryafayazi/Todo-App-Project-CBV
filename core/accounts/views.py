@@ -44,48 +44,46 @@ class LogoutView(View):
 
 
 from django.contrib.auth import authenticate, login, logout
-# from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.views import LogoutView
 from django.views import View
 from django.shortcuts import render, redirect
 from .models import User
-from .forms import RegistrationForm,LoginForm  # You’ll need to create this form
+from .forms import RegistrationForm,LoginForm 
 
-# class CustomLoginView(LoginView):
-    # template_name = 'accounts/login.html'  # Your login template here
+
 
 class CustomLogoutView(LogoutView):
-    next_page = 'accounts:login'  # Redirect to login page after logout
+    next_page = 'accounts:login' 
 
 class RegisterView(View):
     def get(self, request):
-        form = RegistrationForm()  # Initialize your registration form
+        form = RegistrationForm()  
         return render(request, 'accounts/register.html', {'form': form})
 
     def post(self, request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            print(f"User created: {user.email}, Active: {user.is_active}")  # Debugging line
-            login(request, user)  # Log the user in after registration
-            return redirect('/')  # Redirect to a home page or dashboard
+            print(f"User created: {user.email}, Active: {user.is_active}")  
+            login(request, user)  
+            return redirect('/') 
         return render(request, 'accounts/register.html', {'form': form})
 
 
 class CustomLoginView(View):
     def get(self, request):
-        form = LoginForm()  # Initialize the form
+        form = LoginForm()  
         return render(request, 'accounts/login.html', {'form': form})
 
     def post(self, request):
-        form = LoginForm(request.POST)  # Create the form with POST data
-        if form.is_valid():  # Check if the form is valid
+        form = LoginForm(request.POST) 
+        if form.is_valid(): 
             email = form.cleaned_data['email']
-            user = User.objects.get(email=email)  # Get the user instance directly
-            login(request, user)  # Log the user in
-            return redirect('tasks:list_view')  # Redirect to the task list view
+            user = User.objects.get(email=email) 
+            login(request, user)  
+            return redirect('tasks:list_view')  
 
-        return render(request, 'accounts/login.html', {'form': form})  # Re-render the form with errors
+        return render(request, 'accounts/login.html', {'form': form}) 
     
     
     
