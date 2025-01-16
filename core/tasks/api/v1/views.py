@@ -16,12 +16,17 @@ from .serializers import TaskSerializer
 from ...models import Task # from tasks.models import Task
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
-
+from rest_framework.generics import GenericAPIView,CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView
+from rest_framework import mixins
+'''
 # @api_view('GET',)
 # @api_view(['GET','POST'])
 @api_view()
 def api_task_list_view(request):
     return Response({'name':'poorya'})
+
+'''
+
 
 '''
 @api_view(['GET','POST'])
@@ -44,6 +49,8 @@ def TaskList(request):
         #     return Response(serializer.errors)        
 '''
 
+
+'''
 class TaskList(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
@@ -57,7 +64,16 @@ class TaskList(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-        
+'''        
+
+class TaskList(ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TaskSerializer
+    queryset = Task.objects.all() #Task.objects.filter(complete=False)
+    
+
+
+
 
 
 '''
