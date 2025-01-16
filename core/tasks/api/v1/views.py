@@ -60,10 +60,10 @@ class TaskList(APIView):
         
 
 
-
+'''
 @api_view(['GET','PUT','DELETE'])
 @permission_classes([IsAuthenticated])
-def TaskDetail(request,id):
+def taskDetail(request,id):
     task = get_object_or_404(Task,pk=id)
     if request.method == 'GET':
         serializer = TaskSerializer(task)
@@ -82,4 +82,25 @@ def TaskDetail(request,id):
     elif request.method == 'DELETE':
         task.delete()
         return Response({'detail':'item removed successfuly.'},status=status.HTTP_204_NO_CONTENT)
+'''        
+
+class TaskDetail(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TaskSerializer
+    
+    def get(self,request,id):
+        task = get_object_or_404(Task,pk=id)        
+        serializer = self.serializer_class(task)
+        return Response(serializer.data)
+    def put(self,request,id):
+        task = get_object_or_404(Task,pk=id)        
+        serializer = TaskSerializer(task,data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    def delete(self,request,id):
+        task = get_object_or_404(Task,pk=id)        
+        task.delete()
+        return Response({'detail':'item removed successfuly.'},status=status.HTTP_204_NO_CONTENT)
+        
         

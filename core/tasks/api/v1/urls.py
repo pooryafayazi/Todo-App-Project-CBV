@@ -7,7 +7,8 @@ urlpatterns = [
     # path('task/', api_task_list_view,name='api-task-list'),
     # path('task/', TaskList, name='task-list'),
     path('task/', TaskList.as_view(), name='task-list'),
-    path('task/<int:id>/', TaskDetail, name='task-detail'),
+    # path('task/<int:id>/', taskDetail, name='task-detail'),
+    path('task/<int:id>/', TaskDetail.as_view(), name='task-detail'),
 
 
 ]
