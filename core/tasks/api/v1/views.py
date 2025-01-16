@@ -16,8 +16,10 @@ from .serializers import TaskSerializer
 from ...models import Task # from tasks.models import Task
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView,CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import mixins
+
+
 '''
 # @api_view('GET',)
 # @api_view(['GET','POST'])
@@ -70,10 +72,6 @@ class TaskList(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
     queryset = Task.objects.all() #Task.objects.filter(complete=False)
-    
-
-
-
 
 
 '''
@@ -100,10 +98,11 @@ def taskDetail(request,id):
         return Response({'detail':'item removed successfuly.'},status=status.HTTP_204_NO_CONTENT)
 '''        
 
+
+'''
 class TaskDetail(APIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = TaskSerializer
-    
+    serializer_class = TaskSerializer    
     def get(self,request,id):
         task = get_object_or_404(Task,pk=id)        
         serializer = self.serializer_class(task)
@@ -118,5 +117,20 @@ class TaskDetail(APIView):
         task = get_object_or_404(Task,pk=id)        
         task.delete()
         return Response({'detail':'item removed successfuly.'},status=status.HTTP_204_NO_CONTENT)
+'''        
         
-        
+
+class TaskDetail(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TaskSerializer
+    queryset = Task.objects.all()
+
+
+
+
+
+
+
+
+
+
