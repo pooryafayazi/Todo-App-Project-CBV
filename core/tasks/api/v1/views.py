@@ -24,12 +24,15 @@ def api_task_list_view(request):
 
 @api_view()
 def TaskList(request):
-    return Response({'api':'v1'})
+    tasks = Task.objects.all()
+    # tasks = Task.objects.filter(complete=False)
+    serializer = TaskSerializer(tasks, many=True)
+    return Response(serializer.data)
 
 
 @api_view()
 def TaskDetail(request,id):
-    task = get_object_or_404(Task,pk=id)
+    task = get_object_or_404(Task,pk=id,complete=False)
     serializer = TaskSerializer(task)
     return Response(serializer.data)
     # try:
