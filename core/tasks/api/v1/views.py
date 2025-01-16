@@ -45,6 +45,8 @@ def TaskList(request):
 '''
 
 class TaskList(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TaskSerializer
     def get(self,request):
         tasks = Task.objects.all()
         # tasks = Task.objects.filter(complete=False)
