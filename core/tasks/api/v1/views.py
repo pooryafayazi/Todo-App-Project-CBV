@@ -8,7 +8,8 @@ def api_task_list_view(request):
 '''
 
 # API function base view
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import TaskSerializer
@@ -23,6 +24,7 @@ def api_task_list_view(request):
 
 
 @api_view(['GET','POST'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def TaskList(request):
     if request.method == 'GET':
         tasks = Task.objects.all()
@@ -42,6 +44,7 @@ def TaskList(request):
 
 
 @api_view(['GET','PUT','DELETE'])
+@permission_classes([IsAuthenticated])
 def TaskDetail(request,id):
     task = get_object_or_404(Task,pk=id)
     if request.method == 'GET':
