@@ -10,7 +10,8 @@ def api_task_list_view(request):
 # API function base view
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from .serializers import TaskSerializer
+from ...models import Task # from tasks.models import Task
 
 # @api_view('GET',)
 # @api_view(['GET','POST'])
@@ -26,4 +27,8 @@ def TaskList(request):
 
 @api_view()
 def TaskDetail(request,id):
-    return Response({"detail": id})    
+    task = Task.objects.get(pk=id)
+    print(task.__dict__)
+    serializer = TaskSerializer(task)
+    print (serializer.data)
+    return Response(serializer.data)
