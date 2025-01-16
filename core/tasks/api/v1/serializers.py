@@ -8,8 +8,13 @@ from ...models import Task
     
     
 class TaskSerializer(serializers.ModelSerializer):
+    # user = serializers.ReadOnlyField()
+    # user = serializers.CharField(read_only=True)
+    snippet = serializers.ReadOnlyField(source='get_snippet')
+    relative_url =serializers.ReadOnlyField(source='get_absolute_api_url',read_only=True)
     class Meta:
         model = Task
         # fields = '__all__'
-        fields = ['user','id','title', 'complete','active','created_date','due_date']
+        fields = ['user','id','title','snippet', 'complete','active','relative_url','created_date','due_date']
+        # read_only_fields = ['user']
         

@@ -3,11 +3,12 @@ from django.urls import path
 from . import views
 from rest_framework.routers import DefaultRouter
 
+app_name = 'api-v1'
+
 router = DefaultRouter()
 router.register('task', views.TaskModelViewSet, basename='task')
 
 
-app_name = 'api-v1'
 
 urlpatterns = [
     # path('task/', views.api_task_list_view,name='api-task-list'),
