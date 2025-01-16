@@ -4,7 +4,7 @@ from . import views
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('task', views.TaskViewSet, basename='task')
+router.register('task', views.TaskModelViewSet, basename='task')
 
 
 app_name = 'api-v1'
