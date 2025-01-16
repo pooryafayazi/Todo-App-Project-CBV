@@ -104,6 +104,7 @@ class TaskCompleteView(LoginRequiredMixin, View):
     def post(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
         task.complete = not task.complete
+        task.active = not task.active
         task.save()
         return redirect('tasks:list_view')
     

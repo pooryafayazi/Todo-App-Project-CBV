@@ -13,7 +13,7 @@ class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     complete = models.BooleanField(default=False)
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
     created_date = models.DateTimeField(auto_now_add=True)
     due_date = models.DateTimeField(null=True, blank=True)
     updated_date = models.DateTimeField(auto_now=True)

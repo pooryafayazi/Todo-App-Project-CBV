@@ -10,7 +10,7 @@ from .models import User, Profile
 class CustomUserAdmin(UserAdmin):
     model = User
     ordering = ['id']
-    list_display = ['email', 'is_active', 'is_staff', 'is_superuser']
+    list_display = ['id','email', 'is_active', 'is_staff', 'is_superuser']
     list_filter = ['email','is_active', 'is_staff', 'is_superuser']
     fieldsets = (
         ('Authentications', {'fields': ('email', 'password')}),
@@ -24,7 +24,14 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('email', 'password1', 'password2','is_active', 'is_staff', 'is_superuser')
         }),
     )
+class CustomProfileAdmin(admin.ModelAdmin):
+    model = Profile
+    ordering = ['id']
+    list_display = ['id','user', 'first_name', 'last_name']
+    list_filter = ['user']
+    searching_fields = ['id','user', 'first_name', 'last_name']
     
-    
-admin.site.register(Profile) 
+
+
+admin.site.register(Profile, CustomProfileAdmin) 
 admin.site.register(User, CustomUserAdmin)
