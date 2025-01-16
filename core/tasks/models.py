@@ -24,6 +24,7 @@ class Task(models.Model):
         return self.title[0:4]
     def get_absolute_api_url(self,**kwargs):
         return reverse('tasks:api-v1:task-detail', kwargs={'pk': self.pk})
+        # return f"/api/v1/task/{self.id}/"
 
     class Meta:
         order_with_respect_to = "user"
