@@ -41,7 +41,7 @@ def TaskList(request):
         #     return Response(serializer.errors)        
 
 
-@api_view(['GET','PUT'])
+@api_view(['GET','PUT','DELETE'])
 def TaskDetail(request,id):
     task = get_object_or_404(Task,pk=id)
     if request.method == 'GET':
@@ -58,4 +58,7 @@ def TaskDetail(request,id):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+    elif request.method == 'DELETE':
+        task.delete()
+        return Response({'detail':'item removed successfuly.'},status=status.HTTP_204_NO_CONTENT)
         
