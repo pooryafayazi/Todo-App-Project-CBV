@@ -41,14 +41,21 @@ def TaskList(request):
         #     return Response(serializer.errors)        
 
 
-@api_view()
+@api_view(['GET','PUT'])
 def TaskDetail(request,id):
-    task = get_object_or_404(Task,pk=id,complete=False)
-    serializer = TaskSerializer(task)
-    return Response(serializer.data)
-    # try:
-    #     task = Task.objects.get(pk=id)
-    #     serializer = TaskSerializer(task)
-    #     return Response(serializer.data)
-    # except Task.DoesNotExist:
-    #     return Response({'detail':'task does not found'},status=status.HTTP_404_NOT_FOUND)
+    task = get_object_or_404(Task,pk=id)
+    if request.method == 'GET':
+        serializer = TaskSerializer(task)
+        return Response(serializer.data)   
+        # try:
+        #     task = Task.objects.get(pk=id)
+        #     serializer = TaskSerializer(task)
+        #     return Response(serializer.data)
+        # except Task.DoesNotExist:
+        #     return Response({'detail':'task does not found'},status=status.HTTP_404_NOT_FOUND)
+    elif request.method == 'PUT':
+        serializer = TaskSerializer(task,data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+        
