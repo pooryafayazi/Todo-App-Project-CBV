@@ -24,7 +24,7 @@ def api_task_list_view(request):
 
 
 @api_view(['GET','POST'])
-@permission_classes([IsAuthenticatedOrReadOnly])
+@permission_classes([IsAuthenticated])
 def TaskList(request):
     if request.method == 'GET':
         tasks = Task.objects.all()
