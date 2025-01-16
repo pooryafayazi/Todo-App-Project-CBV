@@ -22,12 +22,23 @@ def api_task_list_view(request):
     return Response({'name':'poorya'})
 
 
-@api_view()
+@api_view(['GET','POST'])
 def TaskList(request):
-    tasks = Task.objects.all()
-    # tasks = Task.objects.filter(complete=False)
-    serializer = TaskSerializer(tasks, many=True)
-    return Response(serializer.data)
+    if request.method == 'GET':
+        tasks = Task.objects.all()
+        # tasks = Task.objects.filter(complete=False)
+        serializer = TaskSerializer(tasks, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = TaskSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response(serializer.data)
+        # else:
+        #     return Response(serializer.errors)        
 
 
 @api_view()
