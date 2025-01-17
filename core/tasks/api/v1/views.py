@@ -20,6 +20,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework import mixins
 from rest_framework import viewsets
 from .permissions import IsOwnerOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
 
 '''
 # @api_view('GET',)
@@ -133,6 +134,8 @@ class TaskModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = TaskSerializer
     queryset = Task.objects.all() #Task.objects.filter(complete=False)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['creator', 'title', 'complete', 'active']
     
 
 
