@@ -50,7 +50,7 @@ class TasksListView(ActiveUserRequiredMixin, ListView):
         # queryset = Task.objects.all()  
         profile_instance = get_object_or_404(Profile, user=self.request.user)
         # queryset = Task.objects.filter(user=self.request.user)  
-        queryset = Task.objects.filter(user=profile_instance)
+        queryset = Task.objects.filter(creator=profile_instance)
         filter_value = self.request.GET.get('filter')
         sort_value = self.request.GET.get('sort')
         # filter_value = self.request.GET.get('filter')
@@ -82,7 +82,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     success_url = '/'
     def form_valid(self, form):
         profile_instance = get_object_or_404(Profile, user=self.request.user)
-        form.instance.user = profile_instance
+        form.instance.creator = profile_instance
         # form.instance.user = self.request.user
         return super().form_valid(form)
     
@@ -97,7 +97,7 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     success_url = '/'
     def form_valid(self, form):
         profile_instance = get_object_or_404(Profile, user=self.request.user)
-        form.instance.user = profile_instance
+        form.instance.creator = profile_instance
         # form.instance.user = self.request.user
         return super().form_valid(form)
 

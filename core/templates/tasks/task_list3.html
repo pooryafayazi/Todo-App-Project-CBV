@@ -19,7 +19,7 @@
               <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
                 <i class="fas fa-check-square me-1"></i>
                 {% if tasks %}
-                <u>My Todo-s : {{ tasks.0.user.first_name }} {{ tasks.0.user.last_name }} </u>
+                <u>My Todo-s : {{ tasks.0.creator.first_name }} {{ tasks.0.creator.last_name }} </u>
                 {% else %}
                 <u>My Todo-s</u>
                 {% endif %}

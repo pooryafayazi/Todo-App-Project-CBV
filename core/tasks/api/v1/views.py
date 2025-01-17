@@ -19,6 +19,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import mixins
 from rest_framework import viewsets
+from .permissions import IsOwnerOrReadOnly
 
 '''
 # @api_view('GET',)
@@ -67,12 +68,12 @@ class TaskList(APIView):
         serializer.save()
         return Response(serializer.data)
 '''        
-
+'''
 class TaskList(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
     queryset = Task.objects.all() #Task.objects.filter(complete=False)
-
+'''
 
 '''
 @api_view(['GET','PUT','DELETE'])
@@ -119,17 +120,17 @@ class TaskDetail(APIView):
         return Response({'detail':'item removed successfuly.'},status=status.HTTP_204_NO_CONTENT)
 '''        
         
-
+''''
 class TaskDetail(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
-
+'''
 
 # Example for ViewSet in CBV
 
 class TaskModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = TaskSerializer
     queryset = Task.objects.all() #Task.objects.filter(complete=False)
     

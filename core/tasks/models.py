@@ -9,7 +9,7 @@ from django.urls import reverse
 # User = get_user_model()
 
 class Task(models.Model):
-    user = models.ForeignKey('accounts.Profile', on_delete=models.CASCADE)
+    creator = models.ForeignKey('accounts.Profile', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     complete = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
@@ -26,4 +26,4 @@ class Task(models.Model):
         # return f"/api/v1/task/{self.id}/"
 
     class Meta:
-        order_with_respect_to = "user"
+        order_with_respect_to = "creator"

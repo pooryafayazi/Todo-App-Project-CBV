@@ -19,8 +19,8 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         # fields = '__all__'
-        fields = ['user','id','title','snippet', 'complete','active','relative_url','absolute_url','created_date','due_date']
-        read_only_fields = ['user']
+        fields = ['creator','id','title','snippet', 'complete','active','relative_url','absolute_url','created_date','due_date']
+        read_only_fields = ['creator','active']
                 
     # def get_absolute_url(self,obj):
     def get_abs_ur(self,obj):
@@ -42,6 +42,24 @@ class TaskSerializer(serializers.ModelSerializer):
             representation.pop('due_date',None)
         return representation
         
+    '''
     def create (self, validated_data):
         validated_data['user'] = Profile.objects.get(user__id = self.context.get('request').user.id)
         return super().create(validated_data)
+    '''
+    def create(self, validated_data):
+        complete = validated_data.get('complete', False)
+        if complete:
+            validated_data['active'] = False
+        
+        validated_data['creator'] = Profile.objects.get(user__id=self.context.get('request').user.id)
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        complete = validated_data.get('complete', instance.complete)
+        if complete:
+            validated_data['active'] = False
+        else:
+            validated_data['active'] = True
+
+        return super().update(instance, validated_data)
