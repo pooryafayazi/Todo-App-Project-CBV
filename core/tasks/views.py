@@ -33,7 +33,7 @@ class TListView(ListView):
 
 from django.views.generic import ListView
 from .models import Task
-
+from accounts.models import Profile
 
 class ActiveUserRequiredMixin(UserPassesTestMixin):
     def test_func(self, *args, **kwargs):
@@ -46,13 +46,11 @@ class TasksListView(ActiveUserRequiredMixin, ListView):
     paginate_by = 6
     
 
-    def get_queryset(self):
-        
+    def get_queryset(self):        
         # queryset = Task.objects.all()  
-        context_object_name = 'tasks'
-        
-        queryset = Task.objects.filter(user=self.request.user)  
-        
+        profile_instance = get_object_or_404(Profile, user=self.request.user)
+        # queryset = Task.objects.filter(user=self.request.user)  
+        queryset = Task.objects.filter(user=profile_instance)
         filter_value = self.request.GET.get('filter')
         sort_value = self.request.GET.get('sort')
         # filter_value = self.request.GET.get('filter')
@@ -83,7 +81,9 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     fields = ['title','due_date']
     success_url = '/'
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        profile_instance = get_object_or_404(Profile, user=self.request.user)
+        form.instance.user = profile_instance
+        # form.instance.user = self.request.user
         return super().form_valid(form)
     
     
@@ -96,7 +96,9 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     # form_class = TaskForm i didnt create TaskForm
     success_url = '/'
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        profile_instance = get_object_or_404(Profile, user=self.request.user)
+        form.instance.user = profile_instance
+        # form.instance.user = self.request.user
         return super().form_valid(form)
 
 
