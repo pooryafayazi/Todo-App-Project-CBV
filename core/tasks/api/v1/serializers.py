@@ -14,13 +14,13 @@ class TaskSerializer(serializers.ModelSerializer):
     snippet = serializers.ReadOnlyField(source='get_snippet')
     relative_url =serializers.ReadOnlyField(source='get_absolute_api_url',read_only=True)
     absolute_url = serializers.SerializerMethodField(method_name='get_abs_ur')
-    user = serializers.SlugRelatedField(many=False,slug_field='email',queryset=User.objects.all())
+    # user = serializers.SlugRelatedField(many=False,slug_field='email',queryset=User.objects.all())
 
     class Meta:
         model = Task
         # fields = '__all__'
         fields = ['user','id','title','snippet', 'complete','active','relative_url','absolute_url','created_date','due_date']
-        # read_only_fields = ['user']
+        read_only_fields = ['user']
                 
     # def get_absolute_url(self,obj):
     def get_abs_ur(self,obj):
@@ -42,3 +42,6 @@ class TaskSerializer(serializers.ModelSerializer):
             representation.pop('due_date',None)
         return representation
         
+    def create (self, validated_data):
+        validated_data['user'] = Profile.objects.get(user__id = self.context.get('request').user.id)
+        return super().create(validated_data)
