@@ -8,21 +8,31 @@ def api_task_list_view(request):
 '''
 
 # API function base view
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import TaskSerializer
-from ...models import Task # from tasks.models import Task
-from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import mixins
+
+
+
+
+
+
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .serializers import TaskSerializer
+from ...models import Task
 from rest_framework import viewsets
 from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter ,OrderingFilter
 from .paginations import CustomPagination
+from .filter import TaskFilter
+
+
 '''
 # @api_view('GET',)
 # @api_view(['GET','POST'])
@@ -136,11 +146,11 @@ class TaskModelViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     queryset = Task.objects.all() #Task.objects.filter(complete=False)
     filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
+    filterset_class = TaskFilter
     ordering_fields = ['created_date','due_date' ]
-    filterset_fields = ['creator', 'title', 'complete', 'active']
+    # filterset_fields = ['creator', 'title', 'complete', 'active']
     search_fields = ['title']
     pagination_class = CustomPagination
-    
 
 
 
