@@ -6,11 +6,10 @@ from django.urls import reverse
 
 # Create your models here.
  
-User = get_user_model()
+# User = get_user_model()
 
 class Task(models.Model):
-    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey('accounts.Profile', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     complete = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
