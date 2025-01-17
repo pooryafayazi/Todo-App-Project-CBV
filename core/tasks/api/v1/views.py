@@ -21,7 +21,7 @@ from rest_framework import mixins
 from rest_framework import viewsets
 from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter 
+from rest_framework.filters import SearchFilter ,OrderingFilter
 '''
 # @api_view('GET',)
 # @api_view(['GET','POST'])
@@ -134,7 +134,8 @@ class TaskModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = TaskSerializer
     queryset = Task.objects.all() #Task.objects.filter(complete=False)
-    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
+    ordering_fields = ['created_date','due_date' ]
     filterset_fields = ['creator', 'title', 'complete', 'active']
     search_fields = ['title']
 
