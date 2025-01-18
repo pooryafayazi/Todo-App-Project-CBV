@@ -4,9 +4,9 @@ certifi==2024.12.14
 charset-normalizer==3.4.1
 coreapi==2.3.3
 coreschema==0.0.4
-Django==4.2.17
+Django >4.2,<4.3
 django-filter==24.3
-djangorestframework==3.15.2
+djangorestframework >3.1,<3.15
 drf-yasg[validation]
 idna==3.10
 importlib_resources==6.5.2
