@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView,TokenVerifyView)
+from rest_framework_simplejwt.views import (TokenRefreshView,TokenVerifyView)
 # from rest_framework.authtoken.views import ObtainAuthToken
 
 
@@ -12,16 +12,11 @@ urlpatterns = [
     
     # change pasword
     path('change-password/',views.ChangePasswordApiView.as_view(), name='change-password'),
-    
-    
-    
+         
     # reset password
     # login token
     # login jwt
-    
-    
-    
-    
+        
     # login token
     path('token/login/', views.CustomObtainAuthToken.as_view(), name='token-login'),
     path('token/logout/', views.CustomDiscardAuthToken.as_view(), name='token-logout'),
@@ -32,7 +27,8 @@ urlpatterns = [
     path('jwt/verify/', TokenVerifyView.as_view(), name='jwt-verify'),
 
     
-    
+    # profile
+    path('profile/', views.ProfileApiView.as_view(), name='profile')
     
     
 ]
