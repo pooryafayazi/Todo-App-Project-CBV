@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'tasks',
     'accounts',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_filters',
     'drf_yasg',
 ]
@@ -155,10 +156,13 @@ AUTH_USER_MODEL = 'accounts.User'
 
 # restframework settings
 REST_FRAMEWORK = {
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ]
+    # authentication settings
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    # coreapi settings
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 
-# coreapi settings
-REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
