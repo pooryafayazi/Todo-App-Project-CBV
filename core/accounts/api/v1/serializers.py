@@ -107,3 +107,52 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ['id', 'email', 'first_name', 'last_name', 'image', 'description']
         read_only_fields = ['email']
+        
+class ActivationResendSerializer(serializers.Serializer):
+    email = serializers.EmailField(required = True)
+    
+    def validate(self, attrs):
+        email = attrs.get('email')        
+        try:
+            user_obj = User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise serializers.ValidationError({'detail' : 'User dose not exist.'})
+        if user_obj.is_verified:
+            raise serializers.ValidationError({'detail' : 'User is already activated and verified.'})
+        attrs['user'] = user_obj
+        return super().validate(attrs)
+    
+    
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()  
+        
+    def validate(self, attrs):
+        email = attrs.get('email')
+        try:
+            user_obj = User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise serializers.ValidationError({'detail': _('User does not exist.')})
+        
+        if not user_obj.is_verified:
+            raise serializers.ValidationError({'detail': _('User is not verified.')})
+
+        attrs['user'] = user_obj
+        return attrs
+
+    def create(self, validated_data):
+        return validated_data
+
+
+class ResetPasswordConfirmSerializer(serializers.Serializer):
+    new_password = serializers.CharField(write_only=True)
+    new_password1 = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        if attrs.get('new_password') != attrs.get('new_password1'):
+            raise serializers.ValidationError({'detail' : 'password dose not match'})
+        try:
+            validate_password(attrs.get('new_password'))
+        except exceptions.ValidationError as e:
+            raise serializers.ValidationError({'new_password':list(e.messages)})        
+        return super().validate(attrs)
+    
