@@ -142,7 +142,7 @@ class TaskDetail(RetrieveUpdateDestroyAPIView):
 # Example for ViewSet in CBV
 
 class TaskModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = TaskSerializer
     queryset = Task.objects.all() #Task.objects.filter(complete=False)
     filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
