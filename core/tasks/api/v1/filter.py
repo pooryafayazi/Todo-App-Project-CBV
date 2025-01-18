@@ -8,7 +8,9 @@ import django_filters
 
 
 class TaskFilter(FilterSet):
-    now = str(datetime.now(pytz.utc))[:19]
+    local_tz = pytz.timezone('Asia/Tehran')
+    local_time = datetime.now(local_tz)
+    now = str(local_time)[:19]
     due_date_min = DateTimeFilter(field_name='due_date', lookup_expr='gte', label=f'Now is {now}, Due Date from')
     due_date_max = DateTimeFilter(field_name='due_date', lookup_expr='lte', label=f'Now is {now}, Due Date to')
     # created_date_min = DateTimeFilter(field_name='created_date', lookup_expr='gte', label=f'Now is {now}, created Date from')

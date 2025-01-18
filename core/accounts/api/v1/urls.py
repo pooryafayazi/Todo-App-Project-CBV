@@ -10,6 +10,18 @@ urlpatterns = [
     # registration
     path('registration/', views.RegistrationApiView.as_view(),name='registration'),
     
+    # change pasword
+    path('change-password/',views.ChangePasswordApiView.as_view(), name='change-password'),
+    
+    
+    
+    # reset password
+    # login token
+    # login jwt
+    
+    
+    
+    
     # login token
     path('token/login/', views.CustomObtainAuthToken.as_view(), name='token-login'),
     path('token/logout/', views.CustomDiscardAuthToken.as_view(), name='token-logout'),
@@ -20,10 +32,7 @@ urlpatterns = [
     path('jwt/verify/', TokenVerifyView.as_view(), name='jwt-verify'),
 
     
-    # change pasword
-    # reset password
-    # login token
-    # login jwt
+    
     
     
 ]
