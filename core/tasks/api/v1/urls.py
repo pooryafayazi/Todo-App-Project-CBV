@@ -1,4 +1,4 @@
-from django.urls import path
+# from django.urls import path
 
 # from .views import api_task_list_view
 from . import views

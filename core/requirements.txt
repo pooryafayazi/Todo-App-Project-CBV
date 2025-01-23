@@ -11,6 +11,7 @@ django-mail-templated==2.6.5
 djangorestframework==3.14.0
 djangorestframework_simplejwt==5.4.0
 drf-yasg[validation]
+flake8==7.1.1
 idna==3.10
 importlib_resources==6.5.2
 inflection==0.5.1

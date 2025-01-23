@@ -57,7 +57,7 @@ def TaskList(request):
         #     serializer.save()
         #     return Response(serializer.data)
         # else:
-        #     return Response(serializer.errors)        
+        #     return Response(serializer.errors)
 """
 
 
@@ -90,7 +90,7 @@ def taskDetail(request,id):
     task = get_object_or_404(Task,pk=id)
     if request.method == 'GET':
         serializer = TaskSerializer(task)
-        return Response(serializer.data)   
+        return Response(serializer.data)
         # try:
         #     task = Task.objects.get(pk=id)
         #     serializer = TaskSerializer(task)
@@ -111,19 +111,19 @@ def taskDetail(request,id):
 """
 class TaskDetail(APIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = TaskSerializer    
+    serializer_class = TaskSerializer
     def get(self,request,id):
-        task = get_object_or_404(Task,pk=id)        
+        task = get_object_or_404(Task,pk=id)
         serializer = self.serializer_class(task)
         return Response(serializer.data)
     def put(self,request,id):
-        task = get_object_or_404(Task,pk=id)        
+        task = get_object_or_404(Task,pk=id)
         serializer = TaskSerializer(task,data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
     def delete(self,request,id):
-        task = get_object_or_404(Task,pk=id)        
+        task = get_object_or_404(Task,pk=id)
         task.delete()
         return Response({'detail':'item removed successfuly.'},status=status.HTTP_204_NO_CONTENT)
 """

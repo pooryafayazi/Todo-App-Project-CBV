@@ -3,6 +3,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import View
 
+from accounts.models import Profile
 from .models import Task
 
 
@@ -11,12 +12,12 @@ class TaskListView(TemplateView):
     template_name = 'tasks/task_list3.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tasks'] = Task.objects.all()        
+        context['tasks'] = Task.objects.all()
         context['author'] = Task.objects.first().user
         return context
 """
 
-"""    
+"""
 class TListView(ListView):
     # model = Task
     queryset = Task.objects.all()
@@ -29,10 +30,6 @@ class TListView(ListView):
         # return Task.objects.filter(complete=Flase)
         # return Task.objects.filter(active=True)
 """
-
-from django.views.generic import ListView
-from .models import Task
-from accounts.models import Profile
 
 
 class ActiveUserRequiredMixin(UserPassesTestMixin):

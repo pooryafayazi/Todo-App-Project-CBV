@@ -4,7 +4,6 @@ from django.core import exceptions
 
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
-from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 

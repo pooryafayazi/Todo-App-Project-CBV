@@ -128,9 +128,9 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
         return obj
 
 
-"""    
+"""
 class TestEmailSend(generics.GenericAPIView):
-        
+       
     def get(self, request, *args, **kwargs):
         self.email = 'sarbaz@sarbaz.com'
         user_obj = get_object_or_404(User, email = self.email)

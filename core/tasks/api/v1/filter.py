@@ -1,10 +1,9 @@
-from django_filters import FilterSet, AllValuesFilter
-from django_filters import DateTimeFilter, NumberFilter
-from tasks.models import Task
-from django_filters import DateFromToRangeFilter
+from django_filters import FilterSet, AllValuesFilter, DateTimeFilter, NumberFilter, DateFromToRangeFilter
 from datetime import datetime
 import pytz
-import django_filters
+
+
+from tasks.models import Task
 
 
 class TaskFilter(FilterSet):
@@ -19,13 +18,13 @@ class TaskFilter(FilterSet):
     )
     # created_date_min = DateTimeFilter(field_name='created_date', lookup_expr='gte', label=f'Now is {now}, created Date from')
     # created_date_max = DateTimeFilter(field_name='created_date', lookup_expr='lte', label=f'Now is {now}, created Date to')
-    release_year = django_filters.NumberFilter(
+    release_year = NumberFilter(
         field_name="created_date", lookup_expr="year"
     )
-    release_month = django_filters.NumberFilter(
+    release_month = NumberFilter(
         field_name="created_date", lookup_expr="month"
     )
-    release_day = django_filters.NumberFilter(
+    release_day = NumberFilter(
         field_name="created_date", lookup_expr="day"
     )
 
