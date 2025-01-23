@@ -1,15 +1,18 @@
 from django.db import models
+
 # from django.conf import settings
 from django.contrib.auth import get_user_model
+
 # from django.contrib.auth.models import User
 from django.urls import reverse
 
 # Create your models here.
- 
+
 # User = get_user_model()
 
+
 class Task(models.Model):
-    creator = models.ForeignKey('accounts.Profile', on_delete=models.CASCADE)
+    creator = models.ForeignKey("accounts.Profile", on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     complete = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
@@ -19,10 +22,12 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
     def get_snippet(self):
         return self.title[0:4]
-    def get_absolute_api_url(self,**kwargs):
-        return reverse('tasks:api-v1:task-detail', kwargs={'pk': self.pk})
+
+    def get_absolute_api_url(self, **kwargs):
+        return reverse("tasks:api-v1:task-detail", kwargs={"pk": self.pk})
         # return f"/api/v1/task/{self.id}/"
 
     class Meta:
