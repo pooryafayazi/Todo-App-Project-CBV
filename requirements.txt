@@ -24,14 +24,17 @@ packaging==24.2
 pillow==11.1.0
 psycopg==3.2.3
 psycopg-binary==3.2.3
+PyJWT==2.10.1
 python-decouple==3.8
 pytz==2024.2
 PyYAML==6.0.2
 referencing==0.36.1
 requests==2.32.3
 rpds-py==0.22.3
+setuptools==65.5.1
 sqlparse==0.5.3
 swagger-spec-validator==3.0.4
 typing_extensions==4.12.2
 uritemplate==4.1.1
 urllib3==2.3.0
+wheel==0.40.0
