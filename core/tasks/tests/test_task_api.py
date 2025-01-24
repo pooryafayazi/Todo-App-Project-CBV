@@ -1,17 +1,17 @@
-# from rest_framework.test import APIClient
+from rest_framework.test import APIClient
 import pytest
-# from django.urls import reverse
+from django.urls import reverse
+
 # from accounts.models import User
 
 
 @pytest.mark.django_db
 class TestTaskApi:
     def test_get_task_response_200_status(self):
-        # client = APIClient()
-        # url = reverse("tasks:api-v1:task-list")
-        # response = client.get(url)
-        # assert response.status_code == 200
-        assert 1 == 1
+        client = APIClient()
+        url = reverse("tasks:api-v1:task-list")
+        response = client.get(url)
+        assert response.status_code == 200
 
 
 """
