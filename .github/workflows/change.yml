@@ -54,5 +54,6 @@ jobs:
       env:
         DATABASE_URL: postgres://todo_user:todo_password@postgres:5432/todo_db
         DJANGO_SETTINGS_MODULE: core.settings
+        PYTHONPATH: ./core
       run: |
         pytest
