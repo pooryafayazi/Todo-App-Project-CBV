@@ -3,24 +3,6 @@ import pytest
 from django.urls import reverse
 from accounts.models import User
 
-"""
-import psycopg
-import os
-
-
-@pytest.fixture(scope="session")
-def postgresql_db():
-    connection = psycopg.connect(
-        dbname=os.environ.get("POSTGRES_DB", "postgres"),
-        user=os.environ.get("POSTGRES_USER", "postgres"),
-        password=os.environ.get("POSTGRES_PASSWORD", ""),
-        host=os.environ.get("POSTGRES_HOST", "localhost"),
-        port=os.environ.get("POSTGRES_PORT", "5432"),
-    )
-    yield connection
-    connection.close()
-"""
-
 
 @pytest.fixture
 def api_client():
@@ -43,8 +25,6 @@ class TestTaskApi:
         response = api_client.get(url)
         assert response.status_code == 200
 
-
-"""
     def test_create_task_response_401_status(self, api_client):
         url = reverse("tasks:api-v1:task-list")
         data = {
@@ -67,7 +47,7 @@ class TestTaskApi:
         self, api_client, common_user
     ):
         api_client.force_login(user=common_user)
-        
+
         url = reverse("tasks:api-v1:task-list")
         data = {
             "title": "",
@@ -86,7 +66,7 @@ class TestTaskApi:
 
     def test_update_task_valid_data_response_200_status(self, api_client, common_user):
         api_client.force_login(user=common_user)
-        
+
         url = reverse("tasks:api-v1:task-list")
         data = {
             "title": "test",
@@ -155,4 +135,3 @@ class TestTaskApi:
         api_client.force_login(user=common_user)
         response = api_client.get(url)
         assert response.status_code == 404
-"""
