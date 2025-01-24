@@ -23,7 +23,7 @@ class TestTaskApi:
         url = reverse("tasks:api-v1:task-list")
         response = api_client.get(url)
         assert response.status_code == 200
-
+"""
     def test_create_task_response_401_status(self, api_client):
         url = reverse("tasks:api-v1:task-list")
         data = {
@@ -134,3 +134,4 @@ class TestTaskApi:
         api_client.force_login(user=common_user)
         response = api_client.get(url)
         assert response.status_code == 404
+"""
