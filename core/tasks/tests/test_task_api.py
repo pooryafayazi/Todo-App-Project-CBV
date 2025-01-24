@@ -4,19 +4,18 @@ from django.urls import reverse
 from accounts.models import User
 
 
-
 import psycopg
 import os
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def postgresql_db():
     connection = psycopg.connect(
-        dbname=os.environ.get('POSTGRES_DB', 'postgres'),
-        user=os.environ.get('POSTGRES_USER', 'postgres'),
-        password=os.environ.get('POSTGRES_PASSWORD', ''),
-        host=os.environ.get('POSTGRES_HOST', 'localhost'),
-        port=os.environ.get('POSTGRES_PORT', '5432'),
+        dbname=os.environ.get("POSTGRES_DB", "postgres"),
+        user=os.environ.get("POSTGRES_USER", "postgres"),
+        password=os.environ.get("POSTGRES_PASSWORD", ""),
+        host=os.environ.get("POSTGRES_HOST", "localhost"),
+        port=os.environ.get("POSTGRES_PORT", "5432"),
     )
     yield connection
     connection.close()
