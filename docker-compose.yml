@@ -30,6 +30,8 @@ services:
       POSTGRES_DB: todo_db
       POSTGRES_USER: todo_user
       POSTGRES_PASSWORD: todo_password
+    ports:
+    - "5432:5432"
     expose:
       - "5432"
     restart: always
