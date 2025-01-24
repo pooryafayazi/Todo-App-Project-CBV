@@ -49,6 +49,8 @@ jobs:
         done
 
     - name: Grant CREATEDB privilege to todo_user
+      env:
+        PGPASSWORD: todo_password
       run: |
         psql -h localhost -U postgres -c "ALTER USER todo_user CREATEDB;"
 
