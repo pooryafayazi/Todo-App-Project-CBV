@@ -19,7 +19,7 @@ jobs:
       shell: pwsh
       run: |
         Invoke-WebRequest -UseBasicP -Uri "https://get.docker.com" -OutFile "get-docker.ps1"
-        & "get-docker.ps1"
+        & "$PWDget-docker.ps1"
 
     - name: Install Docker Compose
       shell: pwsh
