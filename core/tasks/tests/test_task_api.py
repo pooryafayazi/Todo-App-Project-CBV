@@ -1,21 +1,17 @@
-# from rest_framework.test import APIClient
-# import pytest
-# from django.urls import reverse
+from rest_framework.test import APIClient
+import pytest
+from django.urls import reverse
 
-# from accounts.models import User
-
-
-# @pytest.mark.django_db
-class TestTaskApi:
-    def test_get_task_response_200_status(self):
-        # client = APIClient()
-        # url = reverse("tasks:api-v1:task-list")
-        # response = client.get(url)
-        # assert response.status_code == 200
-        assert 1 == 1
-
+from accounts.models import User
 
 """
+class TestTaskApi:
+    def test_get_task_response_200_status(self):
+        
+        assert 1 == 1
+"""
+
+
 @pytest.fixture
 def api_client():
     return APIClient()
@@ -36,8 +32,6 @@ class TestTaskApi:
         url = reverse("tasks:api-v1:task-list")
         response = api_client.get(url)
         assert response.status_code == 200
-
-
 
     def test_create_task_response_401_status(self, api_client):
         url = reverse("tasks:api-v1:task-list")
@@ -149,4 +143,3 @@ class TestTaskApi:
         api_client.force_login(user=common_user)
         response = api_client.get(url)
         assert response.status_code == 404
-"""
