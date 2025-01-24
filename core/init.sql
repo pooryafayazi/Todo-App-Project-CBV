@@ -1,1 +1,0 @@
-ALTER USER todo_user CREATEDB;
