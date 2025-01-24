@@ -38,7 +38,7 @@ jobs:
       shell: pwsh
       run: |
         choco install docker-compose -y
-        
+
     - name: Start Docker Service
       shell: pwsh
       run: |
@@ -47,7 +47,7 @@ jobs:
     - name: Setup Docker-compose
       shell: pwsh
       run: |
-        docker-compose up -d
+        docker-compose -f F:\\Git-Repository\\Todo-App-Project-CBV\\docker-compose.yml up -d
 
     - name: Run Tests
       shell: pwsh
