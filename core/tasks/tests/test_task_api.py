@@ -64,11 +64,12 @@ class TestTaskApi:
         assert response.status_code == 401
 
     def test_update_task_valid_data_response_200_status(self, api_client, common_user):
+        api_client.force_login(user=common_user)
+        
         url = reverse("tasks:api-v1:task-list")
         data = {
             "title": "test",
         }
-        api_client.force_login(user=common_user)
         response = api_client.post(url, data)
         task_id = response.data["id"]
         url = reverse("tasks:api-v1:task-detail", args=[task_id])
