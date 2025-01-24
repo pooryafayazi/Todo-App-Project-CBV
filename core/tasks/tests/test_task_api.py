@@ -37,7 +37,8 @@ def common_user():
 class TestTaskApi:
 
     def test_get_task_response_200_status(self, api_client):
-        api_client.force_authenticate(user=None)
+        api_client.login(email="t@test.com", password="T@pass123")
+
         url = reverse("tasks:api-v1:task-list")
         response = api_client.get(url)
         assert response.status_code == 200
