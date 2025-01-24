@@ -39,6 +39,10 @@ jobs:
       run: |
         pip install -r requirements.txt
 
+    - name: Check PostgreSQL logs
+      run: |
+        docker logs $(docker ps -q --filter "ancestor=postgres:15-alpine")
+
     - name: Wait for PostgreSQL to be ready
       run: |
         while ! pg_isready -h postgres -p 5432 -U todo_user; do
