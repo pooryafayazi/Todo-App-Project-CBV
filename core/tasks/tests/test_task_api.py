@@ -1,29 +1,30 @@
+from rest_framework.test import APIClient
 import pytest
 from django.urls import reverse
-from rest_framework.test import APIClient
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
+from accounts.models import User
 
 
 @pytest.fixture
-def api_client_with_user():
-    User.objects.create_user(email="t@test.com", password="T@pass123")
-    client = APIClient()
-    client.login(email="t@test.com", password="T@pass123")
-    return client
+def api_client():
+    return APIClient()
+
+
+@pytest.fixture
+def common_user():
+    user = User.objects.create_user(id=100, email="t@test.com", password="T@pass123")
+    return user
 
 
 @pytest.mark.django_db
 class TestTaskApi:
 
-    def test_get_task_response_200_status(self, api_client_with_user):
+    def test_get_task_response_200_status(self, api_client):
+        api_client.login(email="t@test.com", password="T@pass123")
+
         url = reverse("tasks:api-v1:task-list")
-        response = api_client_with_user.get(url)
+        response = api_client.get(url)
         assert response.status_code == 200
 
-
-"""
     def test_create_task_response_401_status(self, api_client):
         url = reverse("tasks:api-v1:task-list")
         data = {
@@ -134,4 +135,3 @@ class TestTaskApi:
         api_client.force_login(user=common_user)
         response = api_client.get(url)
         assert response.status_code == 404
-"""
