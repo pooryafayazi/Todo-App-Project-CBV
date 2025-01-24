@@ -3,11 +3,11 @@ import pytest
 from django.urls import reverse
 from accounts.models import User
 
-
+"""
 import psycopg
 import os
 
-"""
+
 @pytest.fixture(scope="session")
 def postgresql_db():
     connection = psycopg.connect(
@@ -20,6 +20,7 @@ def postgresql_db():
     yield connection
     connection.close()
 """
+
 
 @pytest.fixture
 def api_client():
