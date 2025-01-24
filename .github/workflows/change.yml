@@ -7,59 +7,36 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-    runs-on: windows-2022
+    runs-on: ubuntu-22.04
+
+    services:
+      db:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: todo_db
+          POSTGRES_USER: todo_user
+          POSTGRES_PASSWORD: todo_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U todo_user"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install Chocolatey
-      shell: pwsh
+    - name: Set up Docker
       run: |
-        if (-Not (Get-Command choco -ErrorAction SilentlyContinue)) {
-            # Install Chocolatey if not installed
-            Set-ExecutionPolicy Bypass -Scope Process -Force; 
-            [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; 
-            iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-        }
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
 
-    - name: Install Docker Desktop
-      shell: pwsh
+    - name: Build and Start Services
       run: |
-        choco install docker-desktop -y
-
-    - name: Enable WSL Feature
-      shell: pwsh
-      run: |
-        dism.exe /Online /Enable-Feature /All /FeatureName:Microsoft-Windows-Subsystem-Linux
-
-    - name: Install Docker Compose
-      shell: pwsh
-      run: |
-        choco install docker-compose -y
-
-    - name: Check Environment PATH
-      shell: pwsh
-      run: |
-        $env:Path -split ';'
-    
-    - name: Check Docker Compose Version
-      shell: pwsh
-      run: |
-        docker-compose --version    
-    
-    - name: Start Docker Service
-      shell: pwsh
-      run: |
-        Start-Service docker
-
-    - name: Setup Docker-compose
-      shell: pwsh
-      run: |
-        docker-compose -f F:\\Git-Repository\\Todo-App-Project-CBV\\docker-compose.yml up -d
+        docker-compose -f F://Git-Repository//Todo-App-Project-CBV//docker-compose.yml up -d
 
     - name: Run Tests
-      shell: pwsh
       run: |
         docker exec todo sh -c "flake8 && pytest ."
