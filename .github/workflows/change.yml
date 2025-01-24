@@ -12,41 +12,9 @@ jobs:
 
     runs-on: ubuntu-22.04
 
-    services:
-      postgres:
-        image: postgres:15-alpine
-        env:
-          POSTGRES_DB: todo_db
-          POSTGRES_USER: todo_user
-          POSTGRES_PASSWORD: todo_password
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U todo_user"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-
-    - name: Check PostgreSQL logs
-      run: |
-        docker logs $(docker ps -q --filter "ancestor=postgres:15-alpine")
-
+    - uses: actions/checkout@v3
+    - name: Setup Docker-Compose
+      run: docker-compose up -d
     - name: Run Tests
-      env:
-        DATABASE_URL: postgres://todo_user:todo_password@postgres:5432/todo_db
-        DJANGO_SETTINGS_MODULE: core.settings
-        PYTHONPATH: ./core
-      run: |
-        pytest
+      run: docker exec todo sh -c "pytest ."
