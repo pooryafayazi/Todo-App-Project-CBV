@@ -15,16 +15,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Docker
+    - name: Install Docker
       shell: pwsh
       run: |
-        Invoke-WebRequest -UseBasicP -Uri "https://get.docker.com" -OutFile "get-docker.ps1"
-        & "$PWD\get-docker.ps1"
-
-    - name: Install Docker Compose
-      shell: pwsh
-      run: |
-        Invoke-WebRequest -UseBasicP -Uri "https://github.com/docker/compose/releases/latest/download/docker-compose-windows-x86_64.exe" -OutFile "C:Program FilesDockerDocker\resources\bindocker-compose.exe"
+        # Enable the WSL feature (Windows Subsystem for Linux)
+        dism.exe /Online /Enable-Feature /All /FeatureName:Microsoft-Windows-Subsystem-Linux
+        # Install Docker using the Chocolatey package manager
+        Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+        choco install docker-desktop -y
 
     - name: Setup Docker-compose
       shell: pwsh
