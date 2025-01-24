@@ -39,7 +39,7 @@ jobs:
 
     - name: Check PostgreSQL logs
       run: |
-        docker logs $(docker ps -q --filter "ancestor=postgres:15-alpine")
+        docker logs $(docker ps -q --filter "name=db")
 
     - name: Run Tests
       run: docker-compose exec todo sh -c "pytest ."
