@@ -43,12 +43,12 @@ jobs:
       run: |
         docker logs $(docker ps -q --filter "ancestor=postgres:15-alpine")
 
-    - name: Wait for PostgreSQL to be ready
-      run: |
-        while ! pg_isready -h postgres -p 5432 -U todo_user; do
-          echo "Waiting for PostgreSQL..."
-          sleep 2
-        done
+    # - name: Wait for PostgreSQL to be ready
+    #   run: |
+    #     while ! pg_isready -h postgres -p 5432 -U todo_user; do
+    #       echo "Waiting for PostgreSQL..."
+    #       sleep 2
+    #     done
 
     - name: Run Tests
       env:
