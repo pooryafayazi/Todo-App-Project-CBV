@@ -7,23 +7,10 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-    runs-on: ubuntu-22.04
 
-    services:
-      db:
-        image: postgres:15-alpine
-        env:
-          POSTGRES_DB: todo_db
-          POSTGRES_USER: todo_user
-          POSTGRES_PASSWORD: todo_password
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U todo_user"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+  build:
+
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v4
@@ -31,12 +18,26 @@ jobs:
     - name: Set up Docker
       run: |
         sudo apt-get update
-        sudo apt-get install -y docker-compose
+        sudo apt-get install -y 
+          apt-transport-https 
+          ca-certificates 
+          curl 
+          software-properties-common
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
+        sudo apt-get update
+        sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
-    - name: Build and Start Services
+    - name: Install Docker Compose
       run: |
-        docker-compose -f F://Git-Repository//Todo-App-Project-CBV//docker-compose.yml up -d
+        sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+
+    - name: Check Docker Compose Version
+      run: docker-compose --version
+
+    - name: Setup Docker-compose
+      run: docker-compose up -d
 
     - name: Run Tests
-      run: |
-        docker exec todo sh -c "flake8 && pytest ."
+      run: docker-compose exec todo sh -c "flake8 && pytest ."
