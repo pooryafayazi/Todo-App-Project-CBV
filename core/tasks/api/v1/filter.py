@@ -1,4 +1,10 @@
-from django_filters import FilterSet, AllValuesFilter, DateTimeFilter, NumberFilter, DateFromToRangeFilter
+from django_filters import (
+    FilterSet,
+    AllValuesFilter,
+    DateTimeFilter,
+    NumberFilter,
+    DateFromToRangeFilter,
+)
 from datetime import datetime
 import pytz
 
@@ -18,15 +24,9 @@ class TaskFilter(FilterSet):
     )
     # created_date_min = DateTimeFilter(field_name='created_date', lookup_expr='gte', label=f'Now is {now}, created Date from')
     # created_date_max = DateTimeFilter(field_name='created_date', lookup_expr='lte', label=f'Now is {now}, created Date to')
-    release_year = NumberFilter(
-        field_name="created_date", lookup_expr="year"
-    )
-    release_month = NumberFilter(
-        field_name="created_date", lookup_expr="month"
-    )
-    release_day = NumberFilter(
-        field_name="created_date", lookup_expr="day"
-    )
+    release_year = NumberFilter(field_name="created_date", lookup_expr="year")
+    release_month = NumberFilter(field_name="created_date", lookup_expr="month")
+    release_day = NumberFilter(field_name="created_date", lookup_expr="day")
 
     # due_date = DateFromToRangeFilter(field_name='due_date',label=f'{now} is Due Date format')
     created_date = DateFromToRangeFilter(

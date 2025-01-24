@@ -16,7 +16,7 @@ from mail_templated import EmailMessage
 import jwt
 from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
 
-from datetime import datetime
+# from datetime import datetime
 import datetime
 import pytz
 

@@ -22,15 +22,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = config('SECRET_KEY')
-SECRET_KEY = config("django-insecure-izuk&gon%qdwv-apkagv$*9+a1zm4o5q1s*typ+*kqd79j)q8&", default="test")
+SECRET_KEY = config(
+    "django-insecure-izuk&gon%qdwv-apkagv$*9+a1zm4o5q1s*typ+*kqd79j)q8&", default="test"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = config('DEBUG', cast=bool)
 
 # DEBUG = True
-DEBUG = config("True", cast = bool ,default=True)
+DEBUG = config("True", cast=bool, default=True)
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*")
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*"
+)
 
 
 # Application definition
