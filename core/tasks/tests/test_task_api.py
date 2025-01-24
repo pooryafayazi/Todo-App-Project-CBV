@@ -45,11 +45,12 @@ class TestTaskApi:
     def test_create_task_invalid_data_response_400_status(
         self, api_client, common_user
     ):
+        api_client.force_login(user=common_user)
+        
         url = reverse("tasks:api-v1:task-list")
         data = {
             "title": "",
         }
-        api_client.force_login(user=common_user)
         response = api_client.post(url, data)
         assert response.status_code == 400
 
