@@ -34,6 +34,12 @@ jobs:
 
     - name: Setup Docker-compose
       run: docker-compose up -d
+    - name: Wait for PostgreSQL to be ready
+      run: sleep 10
+
+    - name: Check PostgreSQL logs
+      run: |
+        docker logs $(docker ps -q --filter "ancestor=postgres:15-alpine")
 
     - name: Run Tests
       run: docker-compose exec todo sh -c "pytest ."
