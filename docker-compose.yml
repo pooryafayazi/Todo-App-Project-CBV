@@ -1,7 +1,16 @@
 # docker-compose.yml file is used to define the services that make up your app.
-version: '3.8'
+version: '3.9'
 
 services:
+  redis:
+    container_name: redis
+    image: redis:7.2.4
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+    command: redis-server --save 60 1 --loglevel warning
+
   todo:
     container_name: todo
     build:
@@ -72,6 +81,7 @@ services:
 volumes:
   postgres_data:
   smtp4dev-data:
+  redis_data:
 
 
 
