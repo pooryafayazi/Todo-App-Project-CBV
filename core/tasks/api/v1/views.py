@@ -13,7 +13,7 @@ from rest_framework import viewsets
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 # from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
 # from rest_framework.response import Response
 # from rest_framework.views import APIView
@@ -139,7 +139,7 @@ class TaskDetail(RetrieveUpdateDestroyAPIView):
 
 
 class TaskModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
     queryset = Task.objects.all()  # Task.objects.filter(complete=False)
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
