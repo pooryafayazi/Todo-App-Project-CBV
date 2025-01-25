@@ -41,3 +41,14 @@ class CustomLoginView(View):
             return redirect("tasks:list_view")
 
         return render(request, "accounts/login.html", {"form": form})
+
+
+
+from django.http import HttpResponse
+import time
+from .tasks import sendEmail
+
+def send_email(response):
+    sendEmail.delay()
+    return HttpResponse("<h1>Done Sending after 3 sec witg sendEmail function<h1>")
+    

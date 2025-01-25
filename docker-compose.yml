@@ -7,7 +7,7 @@ services:
     image: redis:7.2.4
     restart: always
     ports:
-      - 6380:6379    
+      - 6379:6379    
     volumes:
       - redis_data:/data
     command: redis-server --save 60 1 --loglevel warning
@@ -38,6 +38,8 @@ services:
       context: .
       dockerfile: ./dockerfiles/dev/django/Dockerfile
     command: celery -A core worker -l INFO
+    volumes:
+      - ./core:/app
     depends_on:
       - todo
       - redis
