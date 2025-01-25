@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Task</title>
+    <!-- <link rel="stylesheet" href="staticfiles/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script> -->
+</head>
+
+<body>
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col">
+                    <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+                        <div class="card-body py-4 px-4 px-md-5">
+
+                            <!-- <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
+                <i class="fas fa-check-square me-1"></i>
+                {% if tasks %}
+                <u>My Todo-s : {{ tasks.0.creator.first_name }} {{ tasks.0.creator.last_name }} </u>
+                {% else %}
+                <u>My Todo-s</u>
+                {% endif %}
+                <a href="{% url 'accounts:logout' %}" class="text-danger" data-mdb-tooltip-init title="Logout"><i class="fas fa-sign-out-alt ms-3"></i></a>
+              </p>
+  
+              <div class="pb-2">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="flex-row align-items-center">                      
+                      <form class="pt-3" method="POST" action="{% url 'tasks:task-create' %}">
+                          {% csrf_token %}
+                          <div class="input-group mb-3">
+                            <input type="text" class="form-control rounded-4 me-3" name="title" placeholder="Enter task title" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary rounded-4" >Add</button>
+                          </div>
+                          <div class="d-flex justify-content-center align-items-center mb-4 pt-2 pb-3">
+                            <span class="me-3">change due date:</span> 
+                            <input value="{{ task.due_date|date:'Y-m-d\TH:i' }}" name="due_date" type="datetime-local" class="form-control me-3" id="dueDateTime" style="width: 40ch;">
+                            <i class="fas fa-calendar-alt fa-lg me-3"></i>
+                        </div>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+
+                            <hr class="my-4">
+
+
+                            <!-- <form method="get">
+                                <div class="d-flex justify-content-end align-items-center mb-4 pt-2 pb-3">
+                                    <p class="small mb-0 me-2 text-muted">Filter</p>
+                                    <select name="filter" onchange="this.form.submit()">
+                                        <option value="1" {% if request.GET.filter == '1' %}selected{% endif %}>All</option>
+                                        <option value="2" {% if request.GET.filter == '2' %}selected{% endif %}>Completed</option>
+                                        <option value="3" {% if request.GET.filter == '3' %}selected{% endif %}>Active</option>
+                                        <option value="4" {% if request.GET.filter == '4' %}selected{% endif %}>Has due date</option>
+                                    </select>
+                                    <p class="small mb-0 ms-4 me-2 text-muted">Sort</p>
+                                    <select name="sort" onchange="this.form.submit()">
+                                        <option value="1" {% if request.GET.sort == '1' %}selected{% endif %}>Added date</option>
+                                        <option value="2" {% if request.GET.sort == '2' %}selected{% endif %}>Due date</option>
+                                    </select>
+                                    <a href="#!" style="color: #23af89;" data-mdb-tooltip-init title="Ascending"><i class="fas fa-sort-amount-down-alt ms-2"></i></a>
+                                </div>
+                            </form> -->
+
+
+                            <h1>Task List</h1>
+                            {% for task in tasks %}
+                            <ul class="list-group list-group-horizontal rounded-0">
+                                <li
+                                    class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
+                                    <div class="form-check">
+                                        <form method="POST" action="{% url 'tasks:task-complete' pk=task.id %}"
+                                            id="update-form-{{ task.id }}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="complete"
+                                                value="{% if task.complete %}False{% else %}True{% endif %}">
+                                            {% if task.complete %}
+                                            <input class="form-check-input me-0" type="checkbox" value=""
+                                                id="flexCheckChecked1" aria-label="..." checked
+                                                onchange="submitForm(this, '{{ task.id }}')" />
+                                            {% else %}
+                                            <input class="form-check-input me-0" name="complete" type="checkbox"
+                                                value="" id="flexCheckChecked2" aria-label="..."
+                                                onchange="submitForm(this, '{{ task.id }}')" />
+                                            {% endif %}
+                                        </form>
+                                    </div>
+                                </li>
+                                <li
+                                    class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
+                                    <style>
+                                        .completed {
+                                            text-decoration: line-through;
+                                        }
+                                    </style>
+                                    <p class="lead fw-normal mb-0 task-title {% if task.complete %}completed{% endif %}"
+                                        id="task-title-{{ task.id }}">{{ task.title }}</p>
+
+                                </li>
+
+                                {% if task.due_date %}
+                                <li class="list-group-item px-3 py-1 d-flex align-items-center border-0 bg-transparent">
+                                    <div
+                                        class="py-2 px-3 me-2 border border-warning rounded-3 d-flex align-items-center bg-body-tertiary">
+                                        <p class="small mb-0">
+                                            <a href="#!" data-mdb-tooltip-init title="Due on date"><i
+                                                    class="fas fa-hourglass-half me-2 text-warning"></i></a>
+                                            {{ task.due_date }}
+                                        </p>
+                                    </div>
+                                </li>
+                                {% endif %}
+                                <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
+                                    <div class="d-flex flex-row justify-content-end mb-1">
+                                        <a href="{% url 'tasks:task-update' pk=task.id %}" class="text-info"
+                                            data-mdb-tooltip-init title="Edit todo"><i
+                                                class="fas fa-pencil-alt me-3"></i></a>
+                                        <a type="button" href="{% url 'tasks:task-delete' pk=task.id %}"
+                                            class="text-danger" data-mdb-tooltip-init title="Delete todo"><i
+                                                class="fas fa-trash-alt"></i></a>
+                                    </div>
+                                    <div class="text-end text-muted">
+                                        <a href="#!" class="text-muted" data-mdb-tooltip-init title="Created date">
+                                            <p class="small mb-0"><i class="fas fa-info-circle me-2"></i>{{
+                                                task.created_date}}</p>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                            {% endfor %}
+
+                            <ol id="task-list">
+                                
+                            </ol>
+                               
+
+
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+                                integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+                                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                            <script>
+                                $.get('/api/v1/task/',  // url
+                                    function (data, textStatus, jqXHR) {  // success callback
+                                        wrapper = $('#task-list');
+                                        for (task of data.results) {
+                                            wrapper.append(`<li><a href="${task.absolute_url}"><h2>${task.snippet}</h2></a></li>`);
+                                        }
+                                       // alert('status: ' + textStatus + ', data:' + data);
+                                       // console.log(data);
+                                    });
+                            </script>
+
+
+                            <!-- <div class="row">
+                                <div class="col-md-12">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-center">
+                                            {% if page_obj.has_previous %}
+                                                <li class="page-item">
+                                                    <a href="?page={{ page_obj.previous_page_number }}" class="page-link" aria-label="Previous">
+                                                        <span aria-hidden="true">
+                                                            <span class="lnr lnr-chevron-left"></span>
+                                                        </span>
+                                                    Prev</a>
+                                                </li>
+                                            {% endif %}
+                            
+                                            {% for i in page_obj.paginator.page_range %}
+                                                {% if page_obj.number == i %}																			
+                                                    <li class="page-item active"><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+                                                {% else %}
+                                                    <li class="page-item"><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+                                                {% endif %}
+                                            {% endfor %}		                            
+                                                
+                                            {% if page_obj.has_next %}
+                                                <li class="page-item">
+                                                    <a href="?page={{ page_obj.next_page_number }}" class="page-link" aria-label="Next">
+                                                        <span aria-hidden="true">
+                                                            <span class="lnr lnr-chevron-right"></span>
+                                                        </span>
+                                                    Next</a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div> -->
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        function toggleStrike(checkbox, taskId) {
+            const titleElement = document.getElementById('task-title-' + taskId);
+            if (checkbox.checked) {
+                titleElement.style.textDecoration = 'line-through';
+            } else {
+                titleElement.style.textDecoration = 'none';
+            }
+        }
+    </script>
+    <script>
+        function submitForm(checkbox, taskId) {
+            const form = document.getElementById('update-form-' + taskId);
+            form.elements['complete'].value = checkbox.checked ? 'True' : 'False';
+            form.submit();
+        }
+    </script>
+
+
+</body>
+
+</html>

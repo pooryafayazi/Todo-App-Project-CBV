@@ -2,6 +2,8 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import View
+from django.views.generic.base import TemplateView
+
 
 from accounts.models import Profile
 from .models import Task
@@ -67,6 +69,13 @@ class TasksListView(ActiveUserRequiredMixin, ListView):
             queryset = queryset.order_by("-created_date")
 
         return queryset
+    
+class TasksListApiView(TemplateView):
+    template_name = 'tasks/task_list_api.html'
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['tasks'] = Task.objects.all()
+    #     return context
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):

@@ -5,6 +5,7 @@ app_name = "tasks"
 
 urlpatterns = [
     path("", views.TasksListView.as_view(), name="list_view"),
+    path("api/", views.TasksListApiView.as_view(), name="list_view_api"),
     path("create/", views.TaskCreateView.as_view(), name="task-create"),
     path("edit/<int:pk>/", views.TaskUpdateView.as_view(), name="task-update"),
     path("delete/<int:pk>/", views.TaskDeleteView.as_view(), name="task-delete"),
