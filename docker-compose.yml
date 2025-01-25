@@ -31,8 +31,6 @@ services:
       POSTGRES_DB: todo_db
       POSTGRES_USER: todo_user
       POSTGRES_PASSWORD: todo_password
-    ports:
-    - "5432:5432"
     expose:
       - "5432"
     restart: always
@@ -55,6 +53,20 @@ services:
       - ServerOptions__Urls=http://*:80
       #Specifies the server hostname. Used in auto-generated TLS certificate if enabled.
       - ServerOptions__HostName=smtp4dev
+
+  master:
+    image: locustio/locust:2.32.7.dev14
+    ports:
+     - "8089:8089"
+    volumes:
+      - ./core/locust:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --master -H http://todo:8089/
+  
+  worker:
+    image: locustio/locust:2.32.7.dev14
+    volumes:
+      - ./core/locust:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --worker --master-host master
 
 
 volumes:
