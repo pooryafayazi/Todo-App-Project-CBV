@@ -60,7 +60,7 @@ services:
      - "8089:8089"
     volumes:
       - ./core/locust:/mnt/locust
-    command: -f /mnt/locust/locustfile.py --master -H http://todo:8089/
+    command: -f /mnt/locust/locustfile.py --master -H http://todo:8000/
   
   worker:
     image: locustio/locust:2.32.7.dev14
