@@ -160,4 +160,4 @@ cython_debug/
 #.idea/
 
 # ignore database files
-/postgres/
+/postgres/data/*
