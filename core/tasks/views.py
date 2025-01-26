@@ -39,7 +39,8 @@ class ActiveUserRequiredMixin(UserPassesTestMixin):
         return self.request.user.is_active
 
 
-class TasksListView(ActiveUserRequiredMixin, ListView):
+# class TasksListView(ActiveUserRequiredMixin, ListView):
+class TasksListView(ListView):
     model = Task
     template_name = "tasks/task_list3.html"
     context_object_name = "tasks"
@@ -78,7 +79,8 @@ class TasksListApiView(TemplateView):
     #     return context
 
 
-class TaskCreateView(LoginRequiredMixin, CreateView):
+# class TaskCreateView(LoginRequiredMixin, CreateView):
+class TaskCreateView( CreateView):
     model = Task
     template_name = "tasks/task_list3.html"
     fields = ["title", "due_date"]
@@ -91,7 +93,8 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class TaskUpdateView(LoginRequiredMixin, UpdateView):
+# class TaskUpdateView(LoginRequiredMixin, UpdateView):
+class TaskUpdateView(UpdateView):
     model = Task
     template_name = "tasks/task_detail.html"
     fields = ["title", "due_date"]
@@ -106,7 +109,8 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class TaskCompleteView(LoginRequiredMixin, View):
+# class TaskCompleteView(LoginRequiredMixin, View):
+class TaskCompleteView(View):
     def post(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
         task.complete = not task.complete
@@ -115,7 +119,8 @@ class TaskCompleteView(LoginRequiredMixin, View):
         return redirect("tasks:list_view")
 
 
-class TaskDeleteView(LoginRequiredMixin, DeleteView):
+class TaskDeleteView(DeleteView):
     model = Task
     context_object_name = "task"
     success_url = "/"
+
