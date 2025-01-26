@@ -1,7 +1,17 @@
 # docker-compose.yml file is used to define the services that make up your app.
-version: '3.8'
+# version: '3.9'
 
 services:
+  redis:
+    container_name: redis
+    image: redis:7.2.4
+    restart: always
+    ports:
+      - 6379:6379    
+    volumes:
+      - redis_data:/data
+    command: redis-server --save 60 1 --loglevel warning
+
   todo:
     container_name: todo
     build:
@@ -20,6 +30,21 @@ services:
     restart: always
     depends_on:
       - db
+      - redis
+
+  worker:
+    container_name: worker
+    build:
+      context: .
+      dockerfile: ./dockerfiles/dev/django/Dockerfile
+    command: celery -A core worker -l INFO
+    volumes:
+      - ./core:/app
+    depends_on:
+      - todo
+      - redis
+      
+
     
 
   db:
@@ -54,24 +79,25 @@ services:
       #Specifies the server hostname. Used in auto-generated TLS certificate if enabled.
       - ServerOptions__HostName=smtp4dev
 
-  master:
-    image: locustio/locust:2.32.7.dev14
-    ports:
-     - "8089:8089"
-    volumes:
-      - ./core/locust:/mnt/locust
-    command: -f /mnt/locust/locustfile.py --master -H http://todo:8000/
-  
-  worker:
-    image: locustio/locust:2.32.7.dev14
-    volumes:
-      - ./core/locust:/mnt/locust
-    command: -f /mnt/locust/locustfile.py --worker --master-host master
+  # master:
+  #   image: locustio/locust:2.32.7.dev14
+  #   ports:
+  #    - "8089:8089"
+  #   volumes:
+  #     - ./core/locust:/mnt/locust
+  #   command: -f /mnt/locust/locustfile.py --master -H http://todo:8000/
+  # worker:
+  #   image: locustio/locust:2.32.7.dev14
+  #   volumes:
+  #     - ./core/locust:/mnt/locust
+  #   command: -f /mnt/locust/locustfile.py --worker --master-host master
+    
 
 
 volumes:
   postgres_data:
   smtp4dev-data:
+  redis_data:
 
 
 
