@@ -1,0 +1,89 @@
+{
+    "database": {
+        "1737875565523": {
+            "host": "127.0.0.1",
+            "port": 5432,
+            "user": "todo_user",
+            "password": "dbclient_a$oXRSghUC50pJPaD/PemeOA==",
+            "dbType": "PostgreSQL",
+            "database": "todo_db",
+            "advance": {
+                "idleConfig": {
+                    "enable": true,
+                    "connectionIdleTimeout": null
+                },
+                "hideSystemSchema": true,
+                "groupingTables": false,
+                "loadMetaDataWhenExpandTreeView": true
+            },
+            "treeFeatures": [],
+            "usingSSH": false,
+            "useSocksProxy": false,
+            "useHTTPProxy": false,
+            "ssh": {
+                "host": "",
+                "port": 22,
+                "username": "root",
+                "type": "auto",
+                "privateKeyPath": "",
+                "serverType": "linux",
+                "connectTimeout": 5000,
+                "algorithms": {
+                    "kex": [
+                        "ecdh-sha2-nistp256",
+                        "ecdh-sha2-nistp384",
+                        "ecdh-sha2-nistp521",
+                        "diffie-hellman-group-exchange-sha256",
+                        "diffie-hellman-group14-sha256",
+                        "diffie-hellman-group15-sha512",
+                        "diffie-hellman-group16-sha512",
+                        "diffie-hellman-group17-sha512",
+                        "diffie-hellman-group18-sha512",
+                        "diffie-hellman-group14-sha1",
+                        "diffie-hellman-group-exchange-sha1"
+                    ],
+                    "cipher": [
+                        "aes128-gcm@openssh.com",
+                        "aes256-gcm@openssh.com",
+                        "aes128-ctr",
+                        "aes192-ctr",
+                        "aes256-ctr"
+                    ],
+                    "serverHostKey": [
+                        "ecdsa-sha2-nistp256",
+                        "ecdsa-sha2-nistp384",
+                        "ecdsa-sha2-nistp521",
+                        "rsa-sha2-512",
+                        "rsa-sha2-256",
+                        "ssh-rsa",
+                        "ssh-dss"
+                    ]
+                },
+                "disableSFTP": false,
+                "pruneSFTPRoot": true
+            },
+            "socksProxy": {
+                "host": null,
+                "port": 1080,
+                "type": 5
+            },
+            "httpProxy": {
+                "host": null,
+                "port": 3128
+            },
+            "global": false,
+            "savePassword": "Forever",
+            "readonly": false,
+            "sort": 11,
+            "group": "satan",
+            "useSSL": false,
+            "fs": {
+                "encoding": "utf8",
+                "showHidden": true
+            },
+            "key": "1737875565523",
+            "connectionKey": "database.connections"
+        }
+    },
+    "$schema": "https://cdn.database-client.com/dbclient/schema.json"
+}
