@@ -79,6 +79,18 @@ services:
       #Specifies the server hostname. Used in auto-generated TLS certificate if enabled.
       - ServerOptions__HostName=smtp4dev
 
+  beat:
+    container_name: beat
+    build:
+      context: .
+      dockerfile: ./dockerfiles/dev/django/Dockerfile
+    command: celery -A core beat -l INFO
+    volumes:
+      - ./core:/app
+    depends_on:
+      - todo
+      - redis
+
   # master:
   #   image: locustio/locust:2.32.7.dev14
   #   ports:

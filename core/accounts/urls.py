@@ -10,6 +10,6 @@ urlpatterns = [
     path("logout/", views.CustomLogoutView.as_view(), name="logout"),
     path("register/", views.RegisterView.as_view(), name="register"),
     path("api/v1/", include("accounts.api.v1.urls")),
-    path('send-email/', views.send_email, name='send-email'),
+    # path('send-email/', views.send_email, name='send-email'),
 
 ]

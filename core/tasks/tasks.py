@@ -8,5 +8,6 @@ def deleteCompleted():
     if profiles.exists():
         for profile in profiles:
             Task.objects.filter(complete=True, creator=profile).delete()
-    
+
+
         
