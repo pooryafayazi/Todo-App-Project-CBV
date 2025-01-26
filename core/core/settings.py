@@ -201,8 +201,8 @@ CELERY_BROKER_URL = 'redis://redis:6379/1'
 
 CELERY_BEAT_SCHEDULE = {   
     'delete_tasks': {
-        'task': 'accounts.tasks.deleteCompleted',
-        'schedule': 20,
+        'task': 'tasks.tasks.deleteCompleted',
+        'schedule': 600,
     },
 }
 

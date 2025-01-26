@@ -25,7 +25,7 @@ class Command(BaseCommand):
         #         Task.objects.filter(complete=True, creator=profile).delete()
         # else:
         #     print("No profiles found.")
-        for _ in range(10):
+        for _ in range(15):
             complete = self.fake.boolean(chance_of_getting_true=50)
             Task.objects.create(
                 creator=profile,
