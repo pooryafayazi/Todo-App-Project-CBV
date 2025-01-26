@@ -39,8 +39,8 @@ class ActiveUserRequiredMixin(UserPassesTestMixin):
         return self.request.user.is_active
 
 
-# class TasksListView(ActiveUserRequiredMixin, ListView):
-class TasksListView(ListView):
+class TasksListView(ActiveUserRequiredMixin, ListView):
+# class TasksListView(ListView):
     model = Task
     template_name = "tasks/task_list3.html"
     context_object_name = "tasks"
@@ -71,7 +71,7 @@ class TasksListView(ListView):
 
         return queryset
     
-class TasksListApiView(TemplateView):
+class TasksListApiView(ActiveUserRequiredMixin, TemplateView):
     template_name = 'tasks/task_list_api.html'
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
@@ -79,8 +79,8 @@ class TasksListApiView(TemplateView):
     #     return context
 
 
-# class TaskCreateView(LoginRequiredMixin, CreateView):
-class TaskCreateView( CreateView):
+class TaskCreateView(LoginRequiredMixin, CreateView):
+# class TaskCreateView( CreateView):
     model = Task
     template_name = "tasks/task_list3.html"
     fields = ["title", "due_date"]
@@ -93,8 +93,8 @@ class TaskCreateView( CreateView):
         return super().form_valid(form)
 
 
-# class TaskUpdateView(LoginRequiredMixin, UpdateView):
-class TaskUpdateView(UpdateView):
+class TaskUpdateView(LoginRequiredMixin, UpdateView):
+# class TaskUpdateView(UpdateView):
     model = Task
     template_name = "tasks/task_detail.html"
     fields = ["title", "due_date"]
@@ -109,8 +109,8 @@ class TaskUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-# class TaskCompleteView(LoginRequiredMixin, View):
-class TaskCompleteView(View):
+class TaskCompleteView(LoginRequiredMixin, View):
+# class TaskCompleteView(View):
     def post(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
         task.complete = not task.complete
