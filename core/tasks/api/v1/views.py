@@ -139,9 +139,11 @@ class TaskDetail(RetrieveUpdateDestroyAPIView):
 
 
 class TaskModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
-    queryset = Task.objects.all()  # Task.objects.filter(complete=False)
+    #queryset = Task.objects.all()  # Task.objects.filter(complete=False)
+    def get_queryset(self):
+        return Task.objects.filter(creator__user=self.request.user)
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = TaskFilter
     ordering_fields = ["created_date", "due_date"]

@@ -51,4 +51,5 @@ from .tasks import sendEmail
 def send_email(response):
     sendEmail.delay()
     return HttpResponse("<h1>Done Sending after 3 sec witg sendEmail function<h1>")
+
     

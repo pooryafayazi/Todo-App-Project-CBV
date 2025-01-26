@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "drf_yasg",
     "mail_templated",
     'corsheaders',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -197,3 +198,16 @@ CORS_ALLOWED_ORIGINS = [
 
 # celery configs
 CELERY_BROKER_URL = 'redis://redis:6379/1'
+
+CELERY_BEAT_SCHEDULE = {   
+    'delete_tasks': {
+        'task': 'accounts.tasks.deleteCompleted',
+        'schedule': 20,
+    },
+}
+
+# celery -A core worker --loglevel=info
+
+# celery -A core beat -l INFO
+   
+# celery -A core beat --loglevel=info
