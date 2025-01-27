@@ -197,7 +197,7 @@ CORS_ALLOWED_ORIGINS = [
 
 
 # celery configs
-# CELERY_BROKER_URL = 'redis://redis:6379/1'
+CELERY_BROKER_URL = 'redis://redis:6379/1'
 
 # CELERY_BEAT_SCHEDULE = {   
 #     'delete_tasks': {

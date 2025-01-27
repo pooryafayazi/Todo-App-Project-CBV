@@ -2,15 +2,15 @@
 # version: '3.9'
 
 services:
-  # redis:
-  #   container_name: redis
-  #   image: redis:7.2.4
-  #   restart: always
-  #   ports:
-  #     - 6379:6379    
-  #   volumes:
-  #     - redis_data:/data
-  #   command: redis-server --save 60 1 --loglevel warning
+  redis:
+    container_name: redis
+    image: redis:7.2.4
+    restart: always
+    ports:
+      - 6379:6379    
+    volumes:
+      - redis_data:/data
+    command: redis-server --save 60 1 --loglevel warning
 
   todo:
     container_name: todo
@@ -30,19 +30,19 @@ services:
     restart: always
     depends_on:
       - db
-      # - redis
+      - redis
 
-  # worker:
-  #   container_name: worker
-  #   build:
-  #     context: .
-  #     dockerfile: ./dockerfiles/dev/django/Dockerfile
-  #   command: celery -A core worker -l INFO
-  #   volumes:
-  #     - ./core:/app
-  #   depends_on:
-  #     - todo
-  #     - redis
+  worker:
+    container_name: worker
+    build:
+      context: .
+      dockerfile: ./dockerfiles/dev/django/Dockerfile
+    command: celery -A core worker -l INFO
+    volumes:
+      - ./core:/app
+    depends_on:
+      - todo
+      - redis
       
 
     
@@ -109,7 +109,7 @@ services:
 volumes:
   postgres_data:
   smtp4dev-data:
-  # redis_data:
+  redis_data:
 
 
 
