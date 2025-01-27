@@ -4,7 +4,7 @@ from django.views import View
 from django.shortcuts import render, redirect
 import requests
 from django.http import JsonResponse
-
+from django.core.cache import cache
 
 from .models import User
 from .forms import RegistrationForm, LoginForm
@@ -54,7 +54,16 @@ class CustomLoginView(View):
 #     sendEmail.delay()
 #     return HttpResponse("<h1>Done Sending after 3 sec witg sendEmail function<h1>")
 
+
+# def test_postman(request):
+#     response = requests.get('https://956f3b6d-2b9f-46dc-b079-42c81416fc1c.mock.pstmn.io/test/delay/5')
+#     print(response.__dict__)
+#     return JsonResponse(response.json())
+
+
 def test_postman(request):
-    response = requests.get('https://956f3b6d-2b9f-46dc-b079-42c81416fc1c.mock.pstmn.io/test/delay/5')
-    # print(response.__dict__)
-    return JsonResponse(response.json())
+    if cache.get('test_delay_api') is None:
+        response = requests.get('https://956f3b6d-2b9f-46dc-b079-42c81416fc1c.mock.pstmn.io/test/delay/5')
+        # cache.set('test_delay_api', response.json(), timeout=60) # default timeout is 300 seconds
+        cache.set('test_delay_api', response.json())
+    return JsonResponse(cache.get('test_delay_api'))
