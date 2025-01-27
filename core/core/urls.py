@@ -43,6 +43,7 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path("", include("tasks.urls")),
     path("accounts/", include("accounts.urls")),
+    path('api/v1/weather/', include('weather.urls')),
     path("api-docs/", include_docs_urls(title="api sample")),
     path(
         "swagger/output.json",

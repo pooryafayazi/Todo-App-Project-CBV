@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "mail_templated",
     'corsheaders',
     # 'django_celery_beat',
+    'weather'
 ]
 
 MIDDLEWARE = [
@@ -217,7 +218,7 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://redis:6379/2",
-        # "TIMEOUT": 60 * 60 * 24 * 7,  # 1 week # But it should not be set in settings.py
+        # "TIMEOUT": 60 * 60 * 24 * 7,  # 1 week # But regularly, it should not be set in settings.py
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }

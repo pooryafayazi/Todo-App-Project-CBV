@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Task</title>
+  <link rel="stylesheet" href="staticfiles/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
+</head>
+<body>
+  <div class="weather">
+  {% if weather_data.weather %}
+    <h2>Weather in {{ weather_data.name }}</h2>    
+        <img style="width: 100px;" src="http://openweathermap.org/img/wn/{{ weather_data.weather.0.icon }}@2x.png" alt="Weather Icon">
+        <p class="weather-info"><strong>Condition:</strong> {{ weather_data.weather.0.description }}</p>
+        <p class="weather-info"><strong>Temperature:</strong> {{ weather_data.main.temp }} °C</p>
+        <p class="weather-info"><strong>Feels Like:</strong> {{ weather_data.main.feels_like }} °C</p>
+        <p class="weather-info"><strong>Humidity:</strong> {{ weather_data.main.humidity }}%</p>
+        <p class="weather-info"><strong>Pressure:</strong> {{ weather_data.main.pressure }} hPa</p>
+        <p class="weather-info"><strong>Wind Speed:</strong> {{ weather_data.wind.speed }} m/s</p>
+        <p class="weather-info"><strong>Wind Direction:</strong> {{ weather_data.wind.deg }}°</p>
+        <p class="weather-info"><strong>Cloudiness:</strong> {{ weather_data.clouds.all }}%</p>
+        {% if weather_data.rain %}
+            <p class="weather-info"><strong>Rain (last hour):</strong> {{ weather_data.rain.1h }} mm</p>
+        {% endif %}
+        <p class="weather-info"><strong>Sunrise:</strong> {{ weather_data.sys.sunrise | date:"H:i:s" }}</p>
+        <p class="weather-info"><strong>Sunset:</strong> {{ weather_data.sys.sunset | date:"H:i:s" }}</p>
+    {% else %}
+        <p>No weather data available.</p>
+    {% endif %}
+  </div>
+</body>
+</html>
