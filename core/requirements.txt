@@ -11,6 +11,7 @@ django-celery-beat==2.7.0
 django-cors-headers==4.6.0
 django-filter==24.3
 django-mail-templated==2.6.5
+django-redis==5.4.0
 djangorestframework==3.14.0
 djangorestframework_simplejwt==5.4.0
 drf-yasg[validation]
