@@ -6,10 +6,44 @@
   <link rel="stylesheet" href="staticfiles/main.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>  
 </head>
 <body>
+    
   <section class="vh-100">
+    <div class="weather" style="position: absolute; top: 20px; left: 20px; z-index: 1000; background-color: rgba(255, 255, 255, 0.8); padding: 10px; border-radius: 5px;">
+      {% if weather_data.weather %}
+          <h2 style="font-size: 1.2em; margin: 0;">Weather in {{ weather_data.name }}</h2>
+          <div style="display: flex; align-items: center;">          
+            <img style="width: 50px; margin-right:10px;" src="http://openweathermap.org/img/wn/{{ weather_data.weather.0.icon }}@2x.png" alt="Weather Icon">
+          </div>
+            <p class="weather-info" style="margin:0;"><strong>Condition:</strong> {{ weather_data.weather.0.description }}</p>
+          <p class="weather-info" style="margin:0;"><strong>Temperature:</strong> {{ weather_data.main.temp }} °C</p>
+
+          <button id="show-button-{{ weather_data.id }}" style="display:inline; margin: 0 10px; cursor: pointer;" onclick="showDetails('{{ weather_data.id }}')">More details...</button>
+      
+      
+          
+          <div id="weather-details-{{ weather_data.id }}" style="display: none;">
+              <p style="margin:0;" class="weather-info"><strong>Feels Like:</strong> {{ weather_data.main.feels_like }} °C</p>
+              <p style="margin:0;" class="weather-info"><strong>Humidity:</strong> {{ weather_data.main.humidity }}%</p>
+              <p style="margin:0;" class="weather-info"><strong>Pressure:</strong> {{ weather_data.main.pressure }} hPa</p>
+              <p style="margin:0;" class="weather-info"><strong>Wind Speed:</strong> {{ weather_data.wind.speed }} m/s</p>
+              <p style="margin:0;" class="weather-info"><strong>Wind Direction:</strong> {{ weather_data.wind.deg }}°</p>
+              <p style="margin:0;" class="weather-info"><strong>Cloudiness:</strong> {{ weather_data.clouds.all }}%</p>
+              {% if weather_data.rain %}
+                  <p style="margin:0;" class="weather-info"><strong>Rain (last hour):</strong> {{ weather_data.rain.1h }} mm</p>
+              {% endif %}
+              <p style="margin:0;" class="weather-info"><strong>Sunrise:</strong> {{ weather_data.sys.sunrise  }}</p>
+              <p style="margin:0;" class="weather-info"><strong>Sunset:</strong> {{ weather_data.sys.sunset }}</p>
+          
+              <button id="hide-button-{{ weather_data.id }}" style="display:none; margin: 0 10px; cursor: pointer;" onclick="hideDetails('{{ weather_data.id }}')">Hide Details</button>
+
+          </div>
+      {% else %}
+          <p>No weather data available.</p>
+      {% endif %}
+  </div>
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col">
@@ -85,8 +119,7 @@
               </li>
               <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
                   <style>.completed {text-decoration: line-through;}</style>
-                  <p class="lead fw-normal mb-0 task-title {% if task.complete %}completed{% endif %}" id="task-title-{{ task.id }}">{{ task.title }}</p>
-                
+                  <p class="lead fw-normal mb-0 task-title {% if task.complete %}completed{% endif %}" id="task-title-{{ task.id }}">{{ task.title }}</p>                
               </li>
       
               {% if task.due_date %}
@@ -176,5 +209,30 @@
       form.submit();
   }
 </script>
+
+
+<script>
+  function showDetails(id) {
+      const details = document.getElementById(`weather-details-${id}`);
+      const showButton = document.getElementById(`show-button-${id}`);
+      const hideButton = document.getElementById(`hide-button-${id}`);
+
+      details.style.display = "block";
+      showButton.style.display = "none";
+      hideButton.style.display = "inline";
+  }
+
+  function hideDetails(id) {
+      const details = document.getElementById(`weather-details-${id}`);
+      const showButton = document.getElementById(`show-button-${id}`);
+      const hideButton = document.getElementById(`hide-button-${id}`);
+
+      details.style.display = "none";
+      showButton.style.display = "inline"; 
+      hideButton.style.display = "none"; 
+  }
+</script>
+
+
 </body>
 </html>

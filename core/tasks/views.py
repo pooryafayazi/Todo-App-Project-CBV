@@ -3,10 +3,12 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import View
 from django.views.generic.base import TemplateView
-
+from django.http import JsonResponse
+import json
 
 from accounts.models import Profile
 from .models import Task
+from weather.views import WeatherView
 
 
 """
@@ -70,6 +72,26 @@ class TasksListView(ActiveUserRequiredMixin, ListView):
             queryset = queryset.order_by("-created_date")
 
         return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)        
+
+        request = self.request
+        weather_view = WeatherView.as_view()
+        response = weather_view(request)
+        
+        if isinstance(response, JsonResponse):
+            # Decode the JSON response
+            weather_data = response.content.decode('utf-8')
+            # Parse it to a Python dict
+            context['weather_data'] = json.loads(weather_data)
+        else:
+            context['weather_data'] = {'error': 'Unable to fetch weather data.'}
+
+        return context
+    
+    
+    
     
 class TasksListApiView(ActiveUserRequiredMixin, TemplateView):
     template_name = 'tasks/task_list_api.html'
