@@ -7,7 +7,7 @@ from datetime import datetime
 from django.utils import timezone
 import jdatetime
 from django.views.decorators.cache import cache_page
-# from django.utils.decorators import method_decorator
+from django.utils.decorators import method_decorator
 
 
 """
@@ -54,9 +54,9 @@ class WeatherView(View):
         
         
 
-@cache_page(1200)
+# @cache_page(1200)
 class WeatherView(View):
-    # @method_decorator(cache_page(1200), name='get')
+    @method_decorator(cache_page(1200), name='get')
     def get(self, request):
         city = request.GET.get('city', 'Tehran')
         cache_key = f'weather_{city}'
