@@ -1,0 +1,82 @@
+# docker-compose.yml file is used to define the services that make up your app.
+# version: '3.9'
+
+services:
+  redis:
+    container_name: redis
+    image: redis:7.2.4
+    restart: always
+    ports:
+      - 6379:6379    
+    volumes:
+      - redis_data:/data
+    command: redis-server --save 60 1 --loglevel warning
+
+  todo:
+    container_name: todo
+    build: .
+      # context: .
+      # dockerfile: ./dockerfiles/dev/django/Dockerfile
+    volumes:
+      - ./core:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    command: gunicorn core.wsgi --bind 0.0.0.0:8000 #--workers=3
+    expose:
+      - "8000"
+    environment:
+      - DEBUG=0
+      - SECRET_KEY=test
+    restart: always
+    depends_on:
+      - db
+      - redis
+
+  nginx:
+    image: nginx:1.27.3
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - todo
+      - redis
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/home/app/static
+      - media_volume:/home/app/media
+
+  worker:
+    container_name: worker
+    build:
+      context: .
+      dockerfile: ./dockerfiles/dev/django/Dockerfile
+    command: celery -A core worker -l INFO
+    volumes:
+      - ./core:/app
+    depends_on:
+      - todo
+      - redis    
+
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: todo_db
+      POSTGRES_USER: todo_user
+      POSTGRES_PASSWORD: todo_password
+    expose:
+      - "5432"
+    restart: always
+    
+
+
+volumes:
+  postgres_data:
+  redis_data:
+  static_volume:
+  media_volume:
+
+
+# docker-compose -f docker-compose-stage.yml up --build
