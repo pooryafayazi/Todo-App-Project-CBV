@@ -63,5 +63,5 @@ jobs:
             docker-compose -f docker-compose-stage.yml stop
             docker-compose -f docker-compose-stage.yml down
             git pull
-            docker-compose -f docker-compose-stage.yml up --build
+            docker-compose -f docker-compose-stage.yml up --build -d
             docker-compose -f docker-compose-stage.yml restart
