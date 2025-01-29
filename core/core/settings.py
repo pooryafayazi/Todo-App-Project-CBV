@@ -32,10 +32,10 @@ SECRET_KEY = config(
 # DEBUG = True
 DEBUG = config("True", cast=bool, default=True)
 
-ALLOWED_HOSTS = config(
-    "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*"
-)
-
+# ALLOWED_HOSTS = config(
+#     "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*"
+# )
+ALLOWED_HOSTS = ['itmeter.ir', 'www.itmeter.ir']
 
 # Application definition
 
