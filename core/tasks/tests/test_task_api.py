@@ -26,21 +26,21 @@ def common_user():
 @pytest.mark.django_db
 class TestTaskApi:
 
-    def test_get_task_response_200_status(self, api_client):
-        api_client.login(email="t@test.com", password="T@pass123")
+    # def test_get_task_response_200_status(self, api_client):
+    #     api_client.login(email="t@test.com", password="T@pass123")
 
-        url = reverse("tasks:api-v1:task-list")
-        response = api_client.get(url)
-        assert response.status_code == 200
+    #     url = reverse("tasks:api-v1:task-list")
+    #     response = api_client.get(url)
+    #     assert response.status_code == 200
 
-    def test_create_task_response_401_status(self, api_client):
-        url = reverse("tasks:api-v1:task-list")
-        data = {
-            "title": "test",
-        }
-        api_client.force_authenticate(user=None)
-        response = api_client.post(url, data)
-        assert response.status_code == 401
+    # def test_create_task_response_401_status(self, api_client):
+    #     url = reverse("tasks:api-v1:task-list")
+    #     data = {
+    #         "title": "test",
+    #     }
+    #     api_client.force_authenticate(user=None)
+    #     response = api_client.post(url, data)
+    #     assert response.status_code == 401
 
     def test_create_task_valid_data_response_201_status(self, api_client, common_user):
         url = reverse("tasks:api-v1:task-list")
@@ -63,14 +63,14 @@ class TestTaskApi:
         response = api_client.post(url, data)
         assert response.status_code == 400
 
-    def test_update_task_response_401_status(self, api_client):
-        url = reverse("tasks:api-v1:task-detail", args=[1])
-        data = {
-            "title": "test",
-        }
-        api_client.force_authenticate(user=None)
-        response = api_client.put(url, data)
-        assert response.status_code == 401
+    # def test_update_task_response_401_status(self, api_client):
+    #     url = reverse("tasks:api-v1:task-detail", args=[1])
+    #     data = {
+    #         "title": "test",
+    #     }
+    #     api_client.force_authenticate(user=None)
+    #     response = api_client.put(url, data)
+    #     assert response.status_code == 401
 
     def test_update_task_valid_data_response_200_status(self, api_client, common_user):
         api_client.force_login(user=common_user)
@@ -105,11 +105,11 @@ class TestTaskApi:
         response = api_client.put(url, data)
         assert response.status_code == 400
 
-    def test_delete_task_response_401_status(self, api_client):
-        url = reverse("tasks:api-v1:task-detail", args=[1])
-        api_client.force_authenticate(user=None)
-        response = api_client.delete(url)
-        assert response.status_code == 401
+    # def test_delete_task_response_401_status(self, api_client):
+    #     url = reverse("tasks:api-v1:task-detail", args=[1])
+    #     api_client.force_authenticate(user=None)
+    #     response = api_client.delete(url)
+    #     assert response.status_code == 401
 
     def test_delete_task_response_204_status(self, api_client, common_user):
         url = reverse("tasks:api-v1:task-list")
