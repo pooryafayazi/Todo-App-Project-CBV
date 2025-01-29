@@ -35,9 +35,11 @@ DEBUG = config("True", cast=bool, default=True)
 # ALLOWED_HOSTS = config(
 #     "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*"
 # )
-ALLOWED_HOSTS = ['itmeter.ir', 'www.itmeter.ir', '158.255.74.47']
+ALLOWED_HOSTS = ['pooryafayazi.ir', 'www.pooryafayazi.ir', '158.255.74.47','127.0.0.1']
 
 # Application definition
+
+SITE_ID = 1
 
 INSTALLED_APPS = [
     "django.contrib.admin",
