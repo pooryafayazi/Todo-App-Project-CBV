@@ -1,43 +1,58 @@
-# name: Django Todo Project Test
+name: Django Todo Project Test and Deploy
 
-# on:
-#   push:
-#     branches: [ "main" ]
-#   pull_request:
-#     branches: [ "main" ]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
-# jobs:
-#   build:
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          apt-transport-https \
+          ca-certificates \
+          curl \
+          software-properties-common
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
+        sudo apt-get update
+        sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+
+    - name: Install Docker Compose
+      run: |
+        sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+
+    - name: Setup Docker-compose
+      run: docker-compose up --build -d
+
+    - name: Wait for PostgreSQL to be ready
+      run: sleep 10
+
+    - name: Check PostgreSQL logs
+      run: |
+        docker logs $(docker ps -q --filter "name=db")
+
+    - name: Run Tests
+      run: docker-compose exec todo sh -c "pytest ."
+
+
+#   deploy:
+#     name: Deploy
 #     runs-on: ubuntu-22.04
 #     steps:
-#     - uses: actions/checkout@v3
-#     - name: Set up Docker
-#       run: |
-#         sudo apt-get update
-#         sudo apt-get install -y \
-#           apt-transport-https \
-#           ca-certificates \
-#           curl \
-#           software-properties-common
-#         curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-#         echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
-#         sudo apt-get update
-#         sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-
-#     - name: Install Docker Compose
-#       run: |
-#         sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-#         sudo chmod +x /usr/local/bin/docker-compose
-
-#     - name: Setup Docker-compose
-#       run: docker-compose up -d
-
-#     - name: Wait for PostgreSQL to be ready
-#       run: sleep 10
-
-#     - name: Check PostgreSQL logs
-#       run: |
-#         docker logs $(docker ps -q --filter "name=db")
-
-#     - name: Run Tests
-#       run: docker-compose exec todo sh -c "pytest ."
+#       - uses: actions/checkout@v3
+#       - name: Connect and Execute Commands
+#         uses: appleboy/ssh-action@master
+#         with:
+#           username: ${{secrets.USERNAME}}
+#           password: ${{secrets.PASSWORD}}
+#           host: ${{secrets.HOST}}
+#           port: ${{secrets.PORT}}
+#           script: ls
