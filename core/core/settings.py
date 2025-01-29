@@ -35,7 +35,7 @@ DEBUG = config("True", cast=bool, default=True)
 # ALLOWED_HOSTS = config(
 #     "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*"
 # )
-ALLOWED_HOSTS = ['itmeter.ir', 'www.itmeter.ir']
+ALLOWED_HOSTS = ['itmeter.ir', 'www.itmeter.ir', '158.255.74.47']
 
 # Application definition
 
