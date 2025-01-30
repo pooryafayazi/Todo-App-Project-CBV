@@ -1,61 +1,38 @@
-
-
-{% load static %}
+<!-- accounts/login.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <title>Task</title>
-  <link rel="stylesheet" href="{% static 'main.css' %}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورود</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-  <section class="vh-100">
-    <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col">
-          <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
-            <div class="card-body py-4 px-4 px-md-5">
+    <h1>ورود</h1>
+    <form id="login-form">
+        <input type="email" name="email" placeholder="ایمیل" required>
+        <input type="password" name="password" placeholder="رمز عبور" required>
+        <button type="submit">وارد ب</button>
+    </form>
 
 
-              <div class="d-flex justify-content-center align-items-center  pt-2 pb-3">
-                <h2>Login</h2></div>
-                <form method="post" action="{% url 'accounts:login' %}">
-                    {% csrf_token %}
-                    <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><input type="email" name="email" placeholder="email" required></div>
-                    <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><input type="password" name="password" placeholder="Password" required></div>
-                    <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><button type="submit">Login</button></div>
-                    {% if error %}
-                        <p>{{ error }}</p>
-                    {% endif %}
-                </form>
-                {% if form.errors %}
-                            <div class="error">
-                                <ul>
-                                    {% for field in form %}
-                                        {% for error in field.errors %}
-                                            <li>{{ error }}</li>
-                                        {% endfor %}
-                                    {% endfor %}
-                                    {% for error in form.non_field_errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        {% endif %}
-                <br>
-              <div class="d-flex justify-content-center align-items-center  pt-2 pb-3">
-                <p>Don't have an account? <a href="{% url 'accounts:register' %}">Register an account</a></p>
-              </div> 
+    <script>
+        $('#login-form').on('submit', function(e) {
+            e.preventDefault();
+            const formData = $(this).serialize();
+            $.post(window.location.origin + '/accounts/api/v1/jwt/create/', formData, function(response)  {
+                // ذخیره توکن در localStorage
+                localStorage.setItem('access_token', response.access);
 
+                localStorage.setItem('user_email', response.email); // فرض بر این است که ایمیل نیز در پاسخ API برمی‌گردد
 
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+                // هدایت به صفحه تسک‌ها
+                window.location.href = '/api/v1/lists/'; // آدرس صحیح را وارد کنید
+            }).fail(function(xhr) {
+                const errorMessage = xhr.responseJSON && xhr.responseJSON.details ? xhr.responseJSON.details : 'خطای ناشناخته';
+                alert('خطا: ' + errorMessage);
+            });
+        });
+    </script>
 </body>
 </html>

@@ -21,18 +21,7 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         # fields = '__all__'
-        fields = [
-            "creator",
-            "id",
-            "title",
-            "snippet",
-            "complete",
-            "active",
-            "relative_url",
-            "absolute_url",
-            "created_date",
-            "due_date",
-        ]
+        fields = ["creator","id","title","snippet","complete","active","relative_url","absolute_url","created_date","due_date",]
         read_only_fields = ["creator", "active"]
 
     # def get_absolute_url(self,obj):
@@ -51,9 +40,9 @@ class TaskSerializer(serializers.ModelSerializer):
             representation.pop("snippet", None)
             representation.pop("relative_url", None)
             representation.pop("absolute_url", None)
-        else:
-            representation.pop("title", None)
-            representation.pop("due_date", None)
+        # else:
+            # representation.pop("title", None)
+            # representation.pop("due_date", None)
         return representation
 
     """

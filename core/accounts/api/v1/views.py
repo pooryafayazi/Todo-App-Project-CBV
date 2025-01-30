@@ -78,12 +78,16 @@ class CustomObtainAuthToken(ObtainAuthToken):
         return Response({"token": token.key, "user_id": user.pk, "email": user.email})
 
 
+
+
 class CustomDiscardAuthToken(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         request.user.auth_token.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -279,3 +283,23 @@ class ResetPasswordConfirmApiView(generics.GenericAPIView):
             {"detail": _("Password has been reset successfully.")},
             status=status.HTTP_200_OK,
         )
+
+
+from django.views.generic import TemplateView
+class RegistrationPageView(TemplateView):
+    template_name = 'accounts/registration.html'
+
+class ActivationPageView(TemplateView):
+    template_name = 'accounts/activation.html'
+
+class ChangePasswordPageView(TemplateView):
+    template_name = 'accounts/change_password.html'
+
+class ResetPasswordPageView(TemplateView):
+    template_name = 'accounts/reset_password.html'
+
+class ResetPasswordConfirmPageView(TemplateView):
+    template_name = 'accounts/reset_password_confirm.html'
+
+class LoginPageView(TemplateView):
+    template_name = 'accounts/login.html'

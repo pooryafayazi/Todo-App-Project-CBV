@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Update Task</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col">
+                    <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+                        <div class="card-body py-4 px-4 px-md-5">
+                            <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
+                                <i class="fas fa-check-square me-1"></i>
+                                <u>Update Task</u>
+                            </p>
+                            
+                            <div class="pb-2">
+                                <form id="update-task-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control rounded-4 me-3" name="title" id="task-title" placeholder="Enter task title" aria-label="Task title" value="{{ task.title }}">
+                                        <button type="submit" class="btn btn-primary rounded-4">Update</button>
+                                    </div>
+                                    <div class="d-flex justify-content-center align-items-center mb-4 pt-2 pb-3">
+                                        <span class="me-3">Due Date:</span>
+                                        <input name="due_date" type="datetime-local" id="due-date" class="form-control me-3" value="{% if task.due_date %}{{ task.due_date|date:'Y-m-d\TH:i' }}{% endif %}" style="width: 40ch;">
+                                    </div>
+                                </form>
+                            </div>
+
+                            <hr class="my-4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function formatDateForInput(dateString) {
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // ماه باید 2 رقمی باشد
+            const day = String(date.getDate()).padStart(2, '0'); // روز باید 2 رقمی باشد
+            const hours = String(date.getHours()).padStart(2, '0'); // ساعت باید 2 رقمی باشد
+            const minutes = String(date.getMinutes()).padStart(2, '0'); // دقایق باید 2 رقمی باشد
+        
+            return `${year}-${month}-${day}T${hours}:${minutes}`; // ساختار yyyy-MM-ddTHH:mm
+        }
+
+
+        function fetchTask() {
+            const taskId = "{{ task.id }}"; // ID تسک
+
+            $.get(`/api/v1/task/${taskId}/`, function(data) {
+                console.log(data); // نمایش داده‌های تسک در کنسول
+                // در اینجا می‌توانید داده‌ها را در فرم نمایش دهید
+                $('#task-title').val(data.title); // نمایش عنوان تسک
+                $('#due-date').val(formatDateForInput(data.due_date)); // نمایش تاریخ تسک با فرمت صحیح
+            }).fail(function(xhr) {
+                console.error('Error fetching task:', xhr.responseText); // نمایش خطا
+            });
+        }   
+
+
+        $(document).ready(function() {
+            const taskId = "{{ task.id }}"; // ID تسک
+            const token = localStorage.getItem('access_token');
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+    
+            if (token) {
+                $.ajaxSetup({
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'X-CSRFToken': csrfToken 
+                    }
+                });
+            } else {
+                console.error('No access token found. Redirecting to login.');
+                // هدایت به صفحه لاگین
+                window.location.href = "/accounts/login/"; // آدرس صفحه لاگین خود را اینجا قرار دهید
+            }
+            // Initial fetch            
+            fetchTask();
+            $('#update-task-form').on('submit', function(e) {
+                e.preventDefault(); // جلوگیری از رفتار پیش‌فرض فرم
+                const formData = $(this).serialize(); // Serialize form data
+    
+                $.ajax({
+                    url: `/api/v1/task/${taskId}/`, // URL API برای به‌روزرسانی
+                    method: 'PATCH',
+                    data: formData,
+                    success: function() {
+                        window.location.href = "{% url 'tasks:api-v1:lists' %}"; // برگرداندن به لیست تسک‌ها
+                    },
+                    error: function(xhr) {
+                        console.error('Error updating task:', xhr.responseText); // نمایش خطا
+                        alert('Failed to update the task. Please try again.'); // نمایش پیام خطا به کاربر
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

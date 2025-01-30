@@ -1,4 +1,4 @@
-# from django.urls import path
+from django.urls import path
 
 # from .views import api_task_list_view
 from . import views
@@ -8,9 +8,11 @@ app_name = "api-v1"
 
 router = DefaultRouter()
 router.register("task", views.TaskModelViewSet, basename="task")
+urlpatterns = router.urls
 
-
-urlpatterns = [
+urlpatterns += [
+    path("lists/", views.TasksListApiView.as_view(), name="lists"),
+    path("task/update/<int:pk>/", views.TasksListUpdateApiView.as_view(), name="task-update"),
     # path('task/', views.api_task_list_view,name='api-task-list'),
     # path('task/', views.TaskList, name='task-list'),
     # path('task/', views.TaskList.as_view(), name='task-list'),
@@ -20,4 +22,4 @@ urlpatterns = [
     # path('task/<int:pk>/', views.TaskViewSet.as_view({'get':'retrieve','put':'update','patch':'partial_update','delete':'destroy'}), name='task-list'),
 ]
 
-urlpatterns += router.urls
+

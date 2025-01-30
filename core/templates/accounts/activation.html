@@ -1,0 +1,29 @@
+<!-- accounts/activation.html -->
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تأیید حساب</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>تأیید حساب</h1>
+    <form id="activation-form">
+        <input type="text" name="token" placeholder="توکن تأیید" required>
+        <button type="submit">تأیید</button>
+    </form>
+
+    <script>
+        $('#activation-form').on('submit', function(e) {
+            e.preventDefault();
+            const token = $(this).find('input[name="token"]').val();
+            $.get(`/api/v1/activation/confirm/${token}/`, function(response) {
+                alert('حساب تأیید شد: ' + response.details);
+            }).fail(function(xhr) {
+                alert('خطا: ' + xhr.responseJSON.details);
+            });
+        });
+    </script>
+</body>
+</html>

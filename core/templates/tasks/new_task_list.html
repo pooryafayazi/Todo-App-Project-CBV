@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task</title>
+  <link rel="stylesheet" href="staticfiles/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+
+<body>
+    <section class="vh-100">
+        <div class="weather" style="position: absolute; top: 20px; left: 20px; z-index: 1000; background-color: rgba(255, 255, 255, 0.8); padding: 10px; border-radius: 5px;">
+            <p>No weather data available.</p>
+        </div>
+    
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col">
+                    <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+                        <div class="card-body py-4 px-4 px-md-5">
+                            <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
+                                <i class="fas fa-check-square me-1"></i>
+                                <u>My Todo-s</u>
+                                <span id="user-email"></span> <!-- نمایش ایمیل کاربر -->
+                                <a href="{% url 'accounts:logout' %}" class="text-danger" data-mdb-tooltip-init title="Logout"><i class="fas fa-sign-out-alt ms-3"></i></a>
+                            </p>
+    
+                            <div class="pb-2">
+                                <form class="pt-3" id="task-form">
+                                    {% csrf_token %}
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control rounded-4 me-3" name="title" placeholder="Enter task title" aria-label="Recipient's username">
+                                        <button type="submit" class="btn btn-primary rounded-4">Add task</button>
+                                    </div>
+                                    <div class="d-flex justify-content-center align-items-center mb-4 pt-2 pb-3">
+                                        <span class="me-3">Change due date:</span>
+                                        <input name="due_date" type="datetime-local" class="form-control me-3" style="width: 40ch;">
+                                        <i class="fas fa-calendar-alt fa-lg me-3"></i>
+                                    </div>
+                                </form>
+                            </div>
+    
+                            <hr class="my-4">
+    
+                            <div id="task-list" >
+                                <!-- Tasks will be dynamically added here -->
+                            </div>
+    
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-center">
+                                            <!-- Pagination will be added here -->
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        // اضافه کردن هدر Authorization به تمام درخواست‌های AJAX
+
+     $(document).ready(function() {
+        const token = localStorage.getItem('access_token');
+
+        if (token) {
+            $.ajaxSetup({
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+
+            // Fetch tasks from the API
+            fetchTasks();
+        } else {
+            console.error('No access token found. Redirecting to login.');
+            // هدایت به صفحه لاگین
+            window.location.href = "/accounts/login/"; // آدرس صفحه لاگین خود را اینجا قرار دهید
+        }
+    });
+
+
+    function formatDate(dateString) {
+        const options = { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric', 
+            hour: 'numeric', 
+            minute: 'numeric', 
+            hour12: true 
+        };
+        return new Date(dateString).toLocaleString('en-US', options);
+    }
+
+    // Fetch tasks from the API
+        function fetchTasks() {
+            $.get('/api/v1/task/', function(data) {
+                console.log(data); // بررسی داده‌های دریافتی
+                const taskList = $('#task-list');
+                taskList.empty(); // Clear the existing tasks
+                    
+                data.results.forEach(task => {
+                    const formattedDueDate = task.due_date ? formatDate(task.due_date) : '';
+                    const formattedCreatedDate = formatDate(task.created_date);
+
+                    const taskItem = $(`
+                    <ul class="list-group list-group-horizontal rounded-0">
+
+                        <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
+                            <div class="form-check">
+                                <input class="form-check-input me-0" type="checkbox" ${task.complete ? 'checked' : ''} onchange="updateTaskStatus(${task.id}, this.checked)">
+                            </div>
+                        </li>
+
+                        <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
+                            <p class="lead fw-normal mb-0 task-title ${task.complete ? 'completed' : ''}" id="task-title-${task.id}">${task.title}</p>
+                        </li>
+
+                        <li class="list-group-item px-3 py-1 d-flex align-items-center border-0 bg-transparent">
+                            <div class="py-2 px-3 me-2 border border-warning rounded-3 d-flex align-items-center bg-body-tertiary">                                                              
+                                <p class="mb-0 text-muted task-due-date" id="task-due-date-${task.id}"><i class="fas fa-hourglass-half me-2 text-warning"></i>${formattedDueDate}</p>
+                            </div>
+                        </li>
+
+                        <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
+                            <div class="d-flex flex-row justify-content-end mb-1">
+                                <a href="/api/v1/task/update/${task.id}/" class="text-info" title="Edit todo"><i class="fas fa-pencil-alt me-3"></i></a>                            
+                                <a href="#" class="text-danger" onclick="deleteTask(${task.id}); return false;" title="Delete todo"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+                            <div class="text-end text-muted">
+                                <a href="#!" class="text-muted" data-mdb-tooltip-init title="Created date">
+                                    <p class="small mb-0" id="task-due-date-${task.id}"><i class="fas fa-info-circle me-2"></i>${formattedCreatedDate}</p>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                    `);
+                    taskList.append(taskItem);
+                });
+            }).fail(function(xhr) {
+                console.error('Error fetching tasks:', xhr);
+            });
+        }
+    
+        // Add a new task
+        $('#task-form').on('submit', function(e) {
+            e.preventDefault();
+            const formData = $(this).serialize(); // Serialize form data
+        
+            $.post('/api/v1/task/', formData, function() {
+                fetchTasks(); // Refresh task list
+            }).fail(function(xhr) {
+                console.error('Error adding task:', xhr.responseText); // نمایش خطا
+            });
+        });
+    
+        // Update task status
+        function updateTaskStatus(taskId, completed) {
+            const active = !completed; // اگر تسک کامل باشد، active برابر با false و برعکس
+        
+            $.ajax({
+                url: `/api/v1/task/${taskId}/`,
+                method: 'PATCH',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}' // اضافه کردن توکن CSRF
+                },
+                contentType: 'application/json',
+                data: JSON.stringify({ complete: completed, active: active }), // ارسال وضعیت active نیز
+                success: function() {
+                    fetchTasks(); // Refresh task list
+                },
+                error: function(xhr) {
+                    console.error('Error updating task status:', xhr.responseText); // نمایش خطا
+                    alert('Failed to update task status. Please try again.'); // اطلاع‌رسانی به کاربر
+                }
+            });
+        }
+    
+        // Delete a task
+        function deleteTask(taskId) {
+            $.ajax({
+                url: `/api/v1/task/${taskId}/`,
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}' // اضافه کردن توکن CSRF
+                },
+                success: function() {
+                    fetchTasks(); // Refresh task list
+                },
+                error: function(xhr) {
+                    console.error('Error deleting task:', xhr.responseText); // نمایش خطا
+                }
+            });
+        }
+    
+        // Initial fetch
+   
+    </script>
+    <script>
+        $(document).ready(function() {
+            const userEmail = localStorage.getItem('user_email');
+            if (userEmail) {
+                $('#user-email').text(`(${userEmail})`); // نمایش ایمیل در کنار "My Todo-s"
+            } else {
+                $('#user-email').text('(کاربر ناشناس)'); // اگر ایمیل وجود نداشته باشد
+            }
+        });
+    </script>
+
+    <style>
+        .completed {
+            text-decoration: line-through;
+            color: gray; /* یا هر رنگ دیگری که می‌خواهید */
+        }
+
+    </style>
+
+</body>
+
+    </html>

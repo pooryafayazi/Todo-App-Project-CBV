@@ -19,7 +19,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 # from rest_framework.views import APIView
 from django_filters.rest_framework import DjangoFilterBackend
 
-# from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404
 
 
 from .serializers import TaskSerializer
@@ -137,9 +137,11 @@ class TaskDetail(RetrieveUpdateDestroyAPIView):
 
 # Example for ViewSet in CBV
 
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.views.generic.base import TemplateView
 
 class TaskModelViewSet(viewsets.ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
     #queryset = Task.objects.all()  # Task.objects.filter(complete=False)
     def get_queryset(self):
@@ -150,3 +152,23 @@ class TaskModelViewSet(viewsets.ModelViewSet):
     # filterset_fields = ['creator', 'title', 'complete', 'active']
     search_fields = ["title"]
     pagination_class = CustomPagination
+    def perform_update(self, serializer):
+        serializer.save()
+
+
+class ActiveUserRequiredMixin(UserPassesTestMixin):
+    def test_func(self, *args, **kwargs):
+        return self.request.user.is_active
+
+class TasksListApiView(ActiveUserRequiredMixin, TemplateView):
+    template_name = 'tasks/new_task_list.html'
+    # template_name = 'tasks/task_list_api.html'
+
+class TasksListUpdateApiView(ActiveUserRequiredMixin, TemplateView):
+    template_name = 'tasks/task_update.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        task_id = self.kwargs.get('pk')
+        context['task'] = get_object_or_404(Task, id=task_id, creator__user=self.request.user)
+        return context
