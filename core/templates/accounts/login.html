@@ -1,19 +1,49 @@
 <!-- accounts/login.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="fa">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ورود</title>
+    <title>Login page</title>
+    <link rel="stylesheet" href="{% static 'main.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>ورود</h1>
-    <form id="login-form">
-        <input type="email" name="email" placeholder="ایمیل" required>
-        <input type="password" name="password" placeholder="رمز عبور" required>
-        <button type="submit">وارد ب</button>
-    </form>
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+              <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+                <div class="card-body py-4 px-4 px-md-5">
+    
+    
+                  <div class="d-flex justify-content-center align-items-center  pt-2 pb-3">
+                    <h2>Login</h2></div>
+
+
+                        <form id="login-form">
+                            <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><input type="email" name="email" placeholder="Email" required></div>
+                            <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><input type="password" name="password" placeholder="Password" required></div>
+                            <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><button type="submit">Login</button></div>
+                        </form>
+
+                        <br>
+
+                        <div class="d-flex justify-content-center align-items-center  pt-2 pb-3">
+                            <p>Don't have an account? <a href="{% url 'accounts:registrations' %}">Register an account</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+
+                     
 
 
     <script>
@@ -29,8 +59,8 @@
                 // هدایت به صفحه تسک‌ها
                 window.location.href = '/api/v1/lists/'; // آدرس صحیح را وارد کنید
             }).fail(function(xhr) {
-                const errorMessage = xhr.responseJSON && xhr.responseJSON.details ? xhr.responseJSON.details : 'خطای ناشناخته';
-                alert('خطا: ' + errorMessage);
+                const errorMessage = xhr.responseJSON && xhr.responseJSON.details ? xhr.responseJSON.details : 'Unknown Error';
+                alert('Error: ' + errorMessage);
             });
         });
     </script>
