@@ -15,32 +15,31 @@
 <body>
     <section class="vh-100">
         <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col">
-              <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
-                <div class="card-body py-4 px-4 px-md-5">
-    
-    
-                  <div class="d-flex justify-content-center align-items-center  pt-2 pb-3">
-                    <h2>Login</h2></div>
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col">
+                    <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+                        <div class="card-body py-4 px-4 px-md-5">
 
+                            <div class="d-flex justify-content-center align-items-center  pt-2 pb-3">
+                                <h2>Login api</h2>
+                            </div>
+                            
+                            <form id="login-form">
+                                <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><input type="email" name="email" placeholder="Email" required></div>
+                                <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><input type="password" name="password" placeholder="Password" required></div>
+                                <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><button type="submit">Login</button></div>
+                            </form>
 
-                        <form id="login-form">
-                            <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><input type="email" name="email" placeholder="Email" required></div>
-                            <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><input type="password" name="password" placeholder="Password" required></div>
-                            <div class="d-flex justify-content-center align-items-center  pt-2 pb-3"><button type="submit">Login</button></div>
-                        </form>
+                            <br>
 
-                        <br>
-
-                        <div class="d-flex justify-content-center align-items-center  pt-2 pb-3">
-                            <p>Don't have an account? <a href="{% url 'accounts:registrations' %}">Register an account</a></p>
+                            <div class="d-flex justify-content-center align-items-center  pt-2 pb-3">
+                                <p>Don't have an account? <a href="{% url 'accounts:api-v1-accounts:registrations' %}">Register an account</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </section>
 
                      
