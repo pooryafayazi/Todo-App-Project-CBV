@@ -33,7 +33,7 @@
                             <br>
 
                             <div class="d-flex justify-content-center align-items-center  pt-2 pb-3">
-                                <p>Don't have an account? <a href="{% url 'accounts:api-v1-accounts:registrations' %}">Register an account</a></p>
+                                <p>Don't have an account? <a href="{% url 'accounts:api-v1-accounts:registration' %}">Register an account</a></p>
                             </div>
                         </div>
                     </div>
@@ -50,13 +50,12 @@
             e.preventDefault();
             const formData = $(this).serialize();
             $.post(window.location.origin + '/accounts/api/v1/jwt/create/', formData, function(response)  {
-                // ذخیره توکن در localStorage
+
                 localStorage.setItem('access_token', response.access);
 
-                localStorage.setItem('user_email', response.email); // فرض بر این است که ایمیل نیز در پاسخ API برمی‌گردد
+                localStorage.setItem('user_email', response.email);
 
-                // هدایت به صفحه تسک‌ها
-                window.location.href = '/api/v1/lists/'; // آدرس صحیح را وارد کنید
+                window.location.href = '/api/v1/lists/'; 
             }).fail(function(xhr) {
                 const errorMessage = xhr.responseJSON && xhr.responseJSON.details ? xhr.responseJSON.details : 'Unknown Error';
                 alert('Error: ' + errorMessage);

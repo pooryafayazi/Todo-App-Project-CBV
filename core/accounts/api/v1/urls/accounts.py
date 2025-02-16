@@ -31,9 +31,13 @@ urlpatterns = [
     path('reset-passwords/confirm/', views.ResetPasswordConfirmPageView.as_view(), name='reset-password-confirms'),
     path('login/', views.LoginPageView.as_view(), name='login'),
     
+    path("login-api/", views.LoginApiView.as_view(), name="login-api"),
+    path('password-reset-request-api/', views.PasswordResetRequestView.as_view(), name='password-reset-request-api'),
+    path('password-reset-confirm-api/', views.PasswordResetConfirmView.as_view(), name='password-reset-confirm-api'),
+    
     
     
     # login token
-    path("token/login/", views.CustomObtainAuthToken.as_view(), name="token-login"),
-    path("token/logout/", views.CustomDiscardAuthToken.as_view(), name="token-logout"),
+    #path("token/login/", views.CustomObtainAuthToken.as_view(), name="token-login"),
+    #path("token/logout/", views.CustomDiscardAuthToken.as_view(), name="token-logout"),
 ]

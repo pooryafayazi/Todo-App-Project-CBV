@@ -5,9 +5,80 @@ from django.core import exceptions
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
+import random
+from django.core.cache import cache
 
 from ...models import User, Profile
+from django.core.mail import send_mail
+
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        password = attrs.get('password')
+
+        if email and password:
+            user = authenticate(username=email, password=password)
+            if user is None:
+                raise serializers.ValidationError('Invalid credentials')
+        else:
+            raise serializers.ValidationError('Must include "email" and "password"')
+
+        attrs['user'] = user
+        return attrs
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        if not User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("This email is not registered.")
+        return value
+
+    def create(self, validated_data):
+        email = validated_data['email']
+        code = random.randint(100000, 999999)
+        cache.set(email, code, timeout=180)
+
+        send_mail(
+            'Password Reset Code',
+            f'Your password reset code is {code}',
+            'from@example.com',
+            [email],
+            fail_silently=False,
+        )
+
+        return validated_data
+    
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.IntegerField()
+    new_password = serializers.CharField(write_only=True)
+    new_password1 = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        if attrs.get("new_password") != attrs.get("new_password1"):
+            raise serializers.ValidationError({"detail": "password dose not match"})
+        email = attrs.get('email')
+        code = attrs.get('code')
+        
+        cached_code = cache.get(email)
+        if cached_code != code:
+            raise serializers.ValidationError("Invalid or expired code.")
+        return attrs
+        # return super().validate(attrs)
+
+    def save(self, **kwargs):
+        email = self.validated_data['email']
+        # new_password = self.validated_data['new_password']
+        user = User.objects.get(email=email)
+        # user.set_password(new_password)
+        user.set_password(self.validated_data['new_password'])
+        user.save()
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -31,7 +102,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         validated_data.pop("password1", None)
         return User.objects.create_user(**validated_data)
 
-
+"""
 class CustomAuthTokenSerializer(serializers.Serializer):
     email = serializers.CharField(label=_("Email"), write_only=True)
     password = serializers.CharField(
@@ -67,7 +138,7 @@ class CustomAuthTokenSerializer(serializers.Serializer):
 
         attrs["user"] = user
         return attrs
-
+"""
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 

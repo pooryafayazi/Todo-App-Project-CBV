@@ -76,6 +76,8 @@ class TaskList(APIView):
         serializer.save()
         return Response(serializer.data)
 """
+
+
 """
 class TaskList(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
@@ -160,9 +162,34 @@ class ActiveUserRequiredMixin(UserPassesTestMixin):
     def test_func(self, *args, **kwargs):
         return self.request.user.is_active
 
+
+"""
 class TasksListApiView(ActiveUserRequiredMixin, TemplateView):
+    permission_classes = [IsOwnerOrReadOnly]
     template_name = 'tasks/new_task_list.html'
     # template_name = 'tasks/task_list_api.html'
+"""
+
+    
+    
+class TasksListApiView(viewsets.ModelViewSet, TemplateView):
+    # permission_classes = [IsOwnerOrReadOnly]
+    template_name = 'tasks/new_task_list.html'
+    # template_name = 'tasks/task_list_api.html'
+    serializer_class = TaskSerializer
+    #queryset = Task.objects.all()  # Task.objects.filter(complete=False)
+    def get_queryset(self):
+        return Task.objects.filter(creator__user=self.request.user)
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_class = TaskFilter
+    ordering_fields = ["created_date", "due_date"]
+    # filterset_fields = ['creator', 'title', 'complete', 'active']
+    search_fields = ["title"]
+    pagination_class = CustomPagination
+    def perform_update(self, serializer):
+        serializer.save()    
+    
+    
 
 class TasksListUpdateApiView(ActiveUserRequiredMixin, TemplateView):
     template_name = 'tasks/task_update.html'

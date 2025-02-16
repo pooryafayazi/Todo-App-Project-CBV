@@ -5,8 +5,8 @@ LABEL maintainer="poorya189@gmail.com"
 
 ENV PYTHONUNBUFFERED=1
 
-# WORKDIR /usr/src/app
-WORKDIR /app
+WORKDIR /usr/src/app
+# WORKDIR /app
 
 COPY ./requirements.txt .
 

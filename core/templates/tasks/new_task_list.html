@@ -27,7 +27,7 @@
                                 <i class="fas fa-check-square me-1"></i>
                                 <u>My Todo-s</u>
                                 <span id="user-email"></span> <!-- نمایش ایمیل کاربر -->
-                                <a href="{% url 'accounts:logout' %}" class="text-danger" data-mdb-tooltip-init title="Logout"><i class="fas fa-sign-out-alt ms-3"></i></a>
+                                <a href="{% url 'accounts:api-v1-accounts:login-api' %}" class="text-danger" data-mdb-tooltip-init title="Logout"><i class="fas fa-sign-out-alt ms-3"></i></a>
                             </p>
     
                             <div class="pb-2">
@@ -68,7 +68,6 @@
     </section>
     
     <script>
-        // اضافه کردن هدر Authorization به تمام درخواست‌های AJAX
 
      $(document).ready(function() {
         const token = localStorage.getItem('access_token');
@@ -84,8 +83,8 @@
             fetchTasks();
         } else {
             console.error('No access token found. Redirecting to login.');
-            // هدایت به صفحه لاگین
-            window.location.href = "/accounts/login/"; // آدرس صفحه لاگین خود را اینجا قرار دهید
+
+            window.location.href = "/accounts/api/v1/login-api/"; 
         }
     });
 
@@ -105,7 +104,7 @@
     // Fetch tasks from the API
         function fetchTasks() {
             $.get('/api/v1/task/', function(data) {
-                console.log(data); // بررسی داده‌های دریافتی
+                console.log(data); 
                 const taskList = $('#task-list');
                 taskList.empty(); // Clear the existing tasks
                     

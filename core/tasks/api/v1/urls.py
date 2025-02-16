@@ -11,7 +11,7 @@ router.register("task", views.TaskModelViewSet, basename="task")
 urlpatterns = router.urls
 
 urlpatterns += [
-    path("lists/", views.TasksListApiView.as_view(), name="lists"),
+    path("lists/", views.TasksListApiView.as_view({'get': 'list'}), name="lists"),
     path("task/update/<int:pk>/", views.TasksListUpdateApiView.as_view(), name="task-update"),
     # path('task/', views.api_task_list_view,name='api-task-list'),
     # path('task/', views.TaskList, name='task-list'),
