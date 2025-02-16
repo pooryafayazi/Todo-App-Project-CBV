@@ -3,7 +3,7 @@
 
 services:
   redis:
-    container_name: redis
+    container_name: redis-todo-CBV
     image: redis:7.2.4
     restart: always
     ports:
@@ -13,10 +13,10 @@ services:
     command: redis-server --save 60 1 --loglevel warning
 
   todo:
-    container_name: todo
-    build: .
-      # context: .
-      # dockerfile: ./dockerfiles/dev/django/Dockerfile
+    container_name: todo-todo-CBV
+    build:
+      context: .
+      dockerfile: ./dockerfiles/dev/django/Dockerfile
     volumes:
       - ./core:/app
       - static_volume:/app/static
@@ -34,7 +34,7 @@ services:
 
   nginx:
     image: nginx:1.27.3
-    container_name: nginx
+    container_name: nginx-todo-CBV
     restart: always
     ports:
       - "80:80"
@@ -47,10 +47,10 @@ services:
       - media_volume:/home/app/media
 
   worker:
-    container_name: worker
+    container_name: worker-todo-CBV
     build:
       context: .
-      dockerfile: ./dockerfiles/dev/django/Dockerfile
+      dockerfile: ./dockerfiles/dev/django/Dockerfile # ./dockerfiles/dev/django/Dockerfile
     command: celery -A core worker -l INFO
     volumes:
       - ./core:/app

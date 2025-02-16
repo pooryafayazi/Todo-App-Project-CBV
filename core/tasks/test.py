@@ -1,13 +1,3 @@
-# from celery import shared_task
-
-# @shared_task
-# def deleteCompleted():
-#     profiles = Profile.objects.all()
-#     if profiles.exists():
-#         for profile in profiles:
-#             Task.objects.filter(complete=True, creator=profile).delete()
-
-
 from django.urls import reverse
 from django.test import TestCase
 from accounts.models import User
@@ -26,6 +16,7 @@ class TestTaskApi(TestCase):
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIn("id", response.data)  # Check if ID is present in the response
 
     def test_create_task_invalid_data_response_400_status(self):
         url = reverse("tasks:api-v1:task-list")
@@ -34,6 +25,7 @@ class TestTaskApi(TestCase):
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("title", response.data)  # Validate that the error is related to title
 
     def test_update_task_valid_data_response_200_status(self):
         url = reverse("tasks:api-v1:task-list")
@@ -48,6 +40,7 @@ class TestTaskApi(TestCase):
         }
         response = self.client.put(url, updated_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["title"], "test_updated")  # Ensure the title was updated
 
     def test_update_task_invalid_data_response_400_status(self):
         url = reverse("tasks:api-v1:task-list")
@@ -62,6 +55,7 @@ class TestTaskApi(TestCase):
         }
         response = self.client.put(url, updated_data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("title", response.data)  # Validate that the error is related to title
 
     def test_delete_task_response_204_status(self):
         url = reverse("tasks:api-v1:task-list")
@@ -73,6 +67,8 @@ class TestTaskApi(TestCase):
         url = reverse("tasks:api-v1:task-detail", args=[task_id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        response = self.client.get(url)  # Ensure the task is deleted
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_post_get_create_task_response_200_status(self):
         url = reverse("tasks:api-v1:task-list")
@@ -92,5 +88,4 @@ class TestTaskApi(TestCase):
         url = reverse("tasks:api-v1:task-detail", args=[1])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-    
-        
+        self.assertEqual(response.data, {})  # Ensure the response is empty for a non-existent task
