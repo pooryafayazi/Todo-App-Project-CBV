@@ -3,6 +3,7 @@ from django.test import TestCase
 from accounts.models import User
 from rest_framework import status
 
+asssert 
 class TestTaskApi(TestCase):
 
     def setUp(self):

@@ -21,7 +21,7 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         # fields = '__all__'
-        fields = ["creator","id","title","snippet","complete","active","relative_url","absolute_url","created_date","due_date",]
+        fields = ["creator", "id", "title", "snippet", "complete", "active", "relative_url", "absolute_url", "created_date", "due_date",]
         read_only_fields = ["creator", "active"]
 
     # def get_absolute_url(self,obj):
