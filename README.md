@@ -1,2 +1,2 @@
-# Todo-App-Project-CBV
- 
+# Django RestAPI Todo Application
+This repository features a Todo application built with Django and Django REST Framework. It provides a robust API for managing tasks, including creating, updating, deleting, and retrieving todos. The application is designed for easy integration and scalability, making it an ideal choice for developers looking to implement task management features in their projects.
